@@ -1,0 +1,1 @@
+{"version":3,"file":"authorization-response.d.ts","sourceRoot":"","sources":["../../../../src/services/authorization/contracts/authorization-response.ts"],"names":[],"mappings":"AAAA;;;;;;;;GAQG;AACH,MAAM,WAAW,qBAAqB,CAAC,CAAC;IACtC,oFAAoF;IACpF,QAAQ,EAAE,CAAC,CAAC;IAEZ,6CAA6C;IAC7C,QAAQ,EAAE,OAAO,GAAG,MAAM,CAAC;CAC5B"}

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@user-directory/*": ["services/user-directory/*"],
+      "@authorization/*": ["services/authorization/*"],
+      "@database/*": ["services/database/*"],
+      "@email/*": ["services/email/*"],
+      "@event-dispatcher/*": ["services/event-dispatcher/*"],
+      "@log/*": ["services/log/*"],
+      "@file-storage/*": ["services/file-storage/*"],
+      "@template/*": ["services/template/*"],
+      "@logger/*": ["utils/logger/*"],
+      "@event/*": ["utils/event/*"],
+      "@response-builder/*": ["services/response-builder/*"],
+      "@error-handler/*": ["utils/error-handler/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts", "node_modules", "docs"]
+}

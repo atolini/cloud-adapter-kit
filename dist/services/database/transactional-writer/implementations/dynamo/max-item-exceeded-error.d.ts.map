@@ -1,0 +1,1 @@
+{"version":3,"file":"max-item-exceeded-error.d.ts","sourceRoot":"","sources":["../../../../../../src/services/database/transactional-writer/implementations/dynamo/max-item-exceeded-error.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AACH,qBAAa,qBAAsB,SAAQ,KAAK;IAC9C,SAAgB,IAAI,2BAA2B;IAE/C;;OAEG;gBACS,QAAQ,EAAE,MAAM;CAK7B"}

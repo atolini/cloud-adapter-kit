@@ -1,0 +1,1 @@
+{"version":3,"file":"i-log-service-event-logger.d.ts","sourceRoot":"","sources":["../../../../src/services/log/contracts/i-log-service-event-logger.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,WAAW,sBAAsB;IACrC;;;;;;OAMG;IACH,cAAc,CACZ,YAAY,EAAE,MAAM,EACpB,aAAa,EAAE,MAAM,EACrB,QAAQ,EAAE,MAAM,GACf,IAAI,CAAC;CACT"}
