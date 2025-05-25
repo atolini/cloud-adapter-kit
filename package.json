@@ -1,6 +1,5 @@
 {
   "name": "cloud-adapter-kit",
-  "version": "1.0.0",
   "description": "A TypeScript toolkit for building modular cloud adapters with a focus on maintainability and reusability.",
   "scripts": {
     "test": "jest --detectOpenHandles --silent --forceExit",
