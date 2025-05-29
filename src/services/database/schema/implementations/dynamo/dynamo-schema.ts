@@ -1,7 +1,6 @@
 import { IDatabaseSchema } from '@database/schema/contracts';
 import {
   InvalidKeyError,
-  Key,
   KeyConfig,
 } from '@database/schema/implementations/dynamo';
 
@@ -23,7 +22,7 @@ import {
  * schema.getTableName(); // returns 'UsersTable'
  * schema.validateKey({ userId: 'abc123', createdAt: 1692451820 }); // passes
  */
-export class DynamoSchema<T> implements IDatabaseSchema<Key, T> {
+export class DynamoSchema<T> implements IDatabaseSchema<Record<string, unknown>, T> {
   private readonly tableName: string;
   private readonly partitionKey: KeyConfig;
   private readonly sortKey?: KeyConfig;
@@ -60,7 +59,7 @@ export class DynamoSchema<T> implements IDatabaseSchema<Key, T> {
    * @param {Key | T} key - Object to validate. May be just the key or a full entity with key attributes.
    * @throws {InvalidKeyError} If any required key field is missing or has an incorrect type.
    */
-  validateKey(key: Key | T): void {
+  validateKey(key: Record<string, unknown> | T): void {
     this.validateField(this.partitionKey, key);
 
     if (this.sortKey) {
@@ -76,7 +75,7 @@ export class DynamoSchema<T> implements IDatabaseSchema<Key, T> {
    * @param {Key | T} key - The object being validated.
    * @throws {InvalidKeyError} If the field is missing or has an incorrect type.
    */
-  private validateField(field: KeyConfig, key: Key | T): void {
+  private validateField(field: KeyConfig, key: Record<string, unknown> | T): void {
     const value = key[field.name];
 
     if (value === undefined) {
