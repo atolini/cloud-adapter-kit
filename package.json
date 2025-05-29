@@ -1,7 +1,7 @@
 {
   "name": "cloud-adapter-kit",
   "description": "A TypeScript toolkit for building modular cloud adapters with a focus on maintainability and reusability.",
-  "main": "dist/index.js", 
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --detectOpenHandles --silent --forceExit",
@@ -52,5 +52,5 @@
     "lodash": "^4.17.21",
     "uuid": "^11.1.0"
   },
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
