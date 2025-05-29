@@ -10,7 +10,6 @@ import {
   ITransactionalWriterUnit,
 } from '@database/transactional-writer/contracts';
 import {
-  DynamoItem,
   MaxItemsExceededError,
 } from '@database/transactional-writer/implementations/dynamo';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
  * validation on batch size and item keys.
  */
 export class DynamoTransactionWriter
-  implements ITransactionalWriter<DynamoSchema<any>, DynamoItem>
+  implements ITransactionalWriter<DynamoSchema<any>, Record<string, unknown>>
 {
   private readonly client: DynamoDBClient;
   private readonly maxBatchItems: number = 100; // DynamoDB limit for batch write operations
@@ -40,7 +39,7 @@ export class DynamoTransactionWriter
    * Writes a batch of items to DynamoDB transactionally.
    * Validates the batch size and item keys before sending the transaction.
    *
-   * @param {ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]} units -
+   * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
    * An array of transactional write units, each containing a schema container and an item to be written.
    *
    * @returns {Promise<void>} - A promise that resolves when the transaction is completed.
@@ -48,7 +47,7 @@ export class DynamoTransactionWriter
    * @throws {MaxItemsExceededError} - If the number of items exceeds DynamoDB's transactional limit.
    */
   async write(
-    units: ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[],
+    units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[],
   ): Promise<void> {
     this.validateBatchSize(units);
     this.validateKeys(units);
@@ -75,11 +74,11 @@ export class DynamoTransactionWriter
    * defined in its container.
    *
    * @private
-   * @param {ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]} units -
+   * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
    * The units whose item keys will be validated.
    */
   private validateKeys(
-    units: ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[],
+    units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[],
   ) {
     for (const unit of units) {
       unit.container.validateKey(unit.item);

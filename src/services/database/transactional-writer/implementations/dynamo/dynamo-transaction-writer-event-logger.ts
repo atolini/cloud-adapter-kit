@@ -3,7 +3,6 @@ import {
   ITransactionalWriterEventLogger,
   ITransactionalWriterUnit,
 } from '@database/transactional-writer/contracts';
-import { DynamoItem } from '@database/transactional-writer/implementations/dynamo';
 import { ILogger } from '@logger/contracts';
 
 /**
@@ -17,7 +16,7 @@ import { ILogger } from '@logger/contracts';
  * transactionLogger.transactionSucceeded(units);
  */
 export class DynamoTransactionWriterEventLogger
-  implements ITransactionalWriterEventLogger<DynamoSchema<any>, DynamoItem>
+  implements ITransactionalWriterEventLogger<DynamoSchema<any>, Record<string, unknown>>
 {
   private readonly logger: ILogger<unknown>;
 
@@ -36,7 +35,7 @@ export class DynamoTransactionWriterEventLogger
    * @param units - The write units that were successfully written.
    */
   public transactionSucceeded(
-    units: ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[],
+    units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[],
   ) {
     this.logger.info({
       message: 'Transactional Write Succeeded',
