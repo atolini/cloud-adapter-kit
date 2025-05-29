@@ -22,7 +22,7 @@ export class DynamoTransactionWriter {
      * Writes a batch of items to DynamoDB transactionally.
      * Validates the batch size and item keys before sending the transaction.
      *
-     * @param {ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]} units -
+     * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
      * An array of transactional write units, each containing a schema container and an item to be written.
      *
      * @returns {Promise<void>} - A promise that resolves when the transaction is completed.
@@ -50,7 +50,7 @@ export class DynamoTransactionWriter {
      * defined in its container.
      *
      * @private
-     * @param {ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]} units -
+     * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
      * The units whose item keys will be validated.
      */
     validateKeys(units) {

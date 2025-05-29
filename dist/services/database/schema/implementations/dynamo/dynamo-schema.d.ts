@@ -1,5 +1,5 @@
 import { IDatabaseSchema } from '@database/schema/contracts';
-import { Key, KeyConfig } from '@database/schema/implementations/dynamo';
+import { KeyConfig } from '@database/schema/implementations/dynamo';
 /**
  * @template T - The full object type that includes key attributes and possibly additional data.
  *
@@ -18,7 +18,7 @@ import { Key, KeyConfig } from '@database/schema/implementations/dynamo';
  * schema.getTableName(); // returns 'UsersTable'
  * schema.validateKey({ userId: 'abc123', createdAt: 1692451820 }); // passes
  */
-export declare class DynamoSchema<T> implements IDatabaseSchema<Key, T> {
+export declare class DynamoSchema<T> implements IDatabaseSchema<Record<string, unknown>, T> {
     private readonly tableName;
     private readonly partitionKey;
     private readonly sortKey?;
@@ -46,7 +46,7 @@ export declare class DynamoSchema<T> implements IDatabaseSchema<Key, T> {
      * @param {Key | T} key - Object to validate. May be just the key or a full entity with key attributes.
      * @throws {InvalidKeyError} If any required key field is missing or has an incorrect type.
      */
-    validateKey(key: Key | T): void;
+    validateKey(key: Record<string, unknown> | T): void;
     /**
      * Validates a single key field for presence and expected type.
      *

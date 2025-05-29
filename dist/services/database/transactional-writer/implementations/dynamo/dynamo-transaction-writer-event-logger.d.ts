@@ -1,6 +1,5 @@
 import { DynamoSchema } from '@database/schema/implementations/dynamo';
 import { ITransactionalWriterEventLogger, ITransactionalWriterUnit } from '@database/transactional-writer/contracts';
-import { DynamoItem } from '@database/transactional-writer/implementations/dynamo';
 import { ILogger } from '@logger/contracts';
 /**
  * Logs the success of transactional write operations performed by the DynamoTransactionWriter.
@@ -12,7 +11,7 @@ import { ILogger } from '@logger/contracts';
  * const transactionLogger = new DynamoTransactionWriterEventLogger(logger);
  * transactionLogger.transactionSucceeded(units);
  */
-export declare class DynamoTransactionWriterEventLogger implements ITransactionalWriterEventLogger<DynamoSchema<any>, DynamoItem> {
+export declare class DynamoTransactionWriterEventLogger implements ITransactionalWriterEventLogger<DynamoSchema<any>, Record<string, unknown>> {
     private readonly logger;
     /**
      * Creates an instance of DynamoTransactionWriterEventLogger.
@@ -25,6 +24,6 @@ export declare class DynamoTransactionWriterEventLogger implements ITransactiona
      *
      * @param units - The write units that were successfully written.
      */
-    transactionSucceeded(units: ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]): void;
+    transactionSucceeded(units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]): void;
 }
 //# sourceMappingURL=dynamo-transaction-writer-event-logger.d.ts.map

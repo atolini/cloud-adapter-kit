@@ -1,13 +1,12 @@
 import { DynamoSchema } from '@database/schema/implementations/dynamo';
 import { ITransactionalWriter, ITransactionalWriterUnit } from '@database/transactional-writer/contracts';
-import { DynamoItem } from '@database/transactional-writer/implementations/dynamo';
 /**
  *
  * Provides a transactional writer implementation for DynamoDB using AWS SDK.
  * It handles writing multiple items in a single atomic transaction and performs
  * validation on batch size and item keys.
  */
-export declare class DynamoTransactionWriter implements ITransactionalWriter<DynamoSchema<any>, DynamoItem> {
+export declare class DynamoTransactionWriter implements ITransactionalWriter<DynamoSchema<any>, Record<string, unknown>> {
     private readonly client;
     private readonly maxBatchItems;
     /**
@@ -20,20 +19,20 @@ export declare class DynamoTransactionWriter implements ITransactionalWriter<Dyn
      * Writes a batch of items to DynamoDB transactionally.
      * Validates the batch size and item keys before sending the transaction.
      *
-     * @param {ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]} units -
+     * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
      * An array of transactional write units, each containing a schema container and an item to be written.
      *
      * @returns {Promise<void>} - A promise that resolves when the transaction is completed.
      *
      * @throws {MaxItemsExceededError} - If the number of items exceeds DynamoDB's transactional limit.
      */
-    write(units: ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]): Promise<void>;
+    write(units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]): Promise<void>;
     /**
      * Validates that each item in the batch conforms to the key schema
      * defined in its container.
      *
      * @private
-     * @param {ITransactionalWriterUnit<DynamoSchema<any>, DynamoItem>[]} units -
+     * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
      * The units whose item keys will be validated.
      */
     private validateKeys;

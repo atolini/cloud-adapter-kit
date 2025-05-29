@@ -1,6 +1,8 @@
 {
   "name": "cloud-adapter-kit",
   "description": "A TypeScript toolkit for building modular cloud adapters with a focus on maintainability and reusability.",
+  "main": "dist/index.js", 
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --detectOpenHandles --silent --forceExit",
     "docs": "typedoc --options typedoc.json",
@@ -19,6 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.27.0",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@types/jest": "^29.5.14",
     "aws-sdk-client-mock": "^4.1.0",
     "eslint": "^9.27.0",
