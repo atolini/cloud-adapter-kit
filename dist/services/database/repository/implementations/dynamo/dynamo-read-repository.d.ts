@@ -34,12 +34,18 @@ export declare class DynamoReadRepository<T extends DynamoItem> implements IRead
      *
      * @param condition A condition builder that defines the query expression.
      * @param indexName Optional index name to query against a secondary index.
-     * @param consistentRead Whether to use strongly consistent reads (default: false).
+     * @param consistentRead (Optional) Specifies whether to enable strongly consistent reads. Defaults to false.
      * @param limit Optional limit on the number of items to return.
      * @param exclusiveStartKey Optional key to start the query from (for pagination).
      * @returns A promise that resolves to an object containing the items and an optional lastEvaluatedKey.
      */
-    query(condition: DynamoConditionBuilder, indexName?: string, consistentRead?: boolean, limit?: number, exclusiveStartKey?: Key): Promise<{
+    query(input: {
+        condition: DynamoConditionBuilder;
+        indexName?: string;
+        consistentRead?: boolean;
+        limit?: number;
+        exclusiveStartKey?: Key;
+    }): Promise<{
         items: T[];
         lastEvaluatedKey?: Key;
     }>;

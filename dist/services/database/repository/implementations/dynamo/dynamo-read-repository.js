@@ -50,19 +50,20 @@ export class DynamoReadRepository {
      *
      * @param condition A condition builder that defines the query expression.
      * @param indexName Optional index name to query against a secondary index.
-     * @param consistentRead Whether to use strongly consistent reads (default: false).
+     * @param consistentRead (Optional) Specifies whether to enable strongly consistent reads. Defaults to false.
      * @param limit Optional limit on the number of items to return.
      * @param exclusiveStartKey Optional key to start the query from (for pagination).
      * @returns A promise that resolves to an object containing the items and an optional lastEvaluatedKey.
      */
-    async query(condition, indexName, consistentRead = false, limit, exclusiveStartKey) {
+    async query(input) {
+        const { condition, indexName, consistentRead, limit, exclusiveStartKey } = input;
         const { ConditionExpression, ExpressionAttributeNames, ExpressionAttributeValues, } = condition.build();
         const params = {
             TableName: this.tableName,
             KeyConditionExpression: ConditionExpression,
             ExpressionAttributeNames: ExpressionAttributeNames,
             ExpressionAttributeValues: ExpressionAttributeValues,
-            ConsistentRead: consistentRead,
+            ConsistentRead: consistentRead ?? false,
             Limit: limit,
             ExclusiveStartKey: exclusiveStartKey
                 ? marshall(exclusiveStartKey)

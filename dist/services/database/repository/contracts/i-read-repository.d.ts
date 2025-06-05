@@ -16,14 +16,17 @@ export interface IReadRepository<T, K, C extends IConditionBuilder<any>> {
      */
     getItem(key: K): Promise<T | null>;
     /**
-     * Queries items from the database based on provided conditions.
+     * Queries items from the database based on the provided conditions.
      *
-     * @param condition - A condition builder instance defining the query conditions.
-     * @param indexName - (Optional) The name of the secondary index to use for the query.
-     * @returns A promise resolving to an object containing the matched items and,
-     *          if pagination is required, the last evaluated key. Returns null if no items matched.
+     * @param input.condition - A condition builder instance used to define the query conditions.
+     * @param input.indexName - (Optional) The name of the secondary index to use for the query.
+     * @returns A promise that resolves to an object containing the matched items and,
+     *          if pagination is applicable, the last evaluated key. Returns null if no items matched.
      */
-    query(condition: C, indexName?: string): Promise<{
+    query(input: {
+        condition: C;
+        indexName?: string;
+    }): Promise<{
         items: T[];
         lastEvaluatedKey?: K;
     } | null>;
