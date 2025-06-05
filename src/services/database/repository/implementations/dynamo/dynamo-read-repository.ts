@@ -39,8 +39,8 @@ export class DynamoReadRepository<T extends DynamoItem>
    */
   constructor(
     private readonly schema: DynamoSchema<T>,
-    private readonly eventLogger: DynamoReadRepositoryEventLogger<T>,
-    region: string,
+    private readonly eventLogger?: DynamoReadRepositoryEventLogger<T>,
+    region?: string,
   ) {
     this.client = new DynamoDBClient(region ? { region: region } : {});
     this.tableName = this.schema.getTableName();
@@ -68,7 +68,7 @@ export class DynamoReadRepository<T extends DynamoItem>
       ? (unmarshall(response.Item) as unknown as T)
       : null;
 
-    this.eventLogger.itemFetched(key, item);
+    this.eventLogger?.itemFetched(key, item);
 
     return item;
   }
@@ -124,7 +124,7 @@ export class DynamoReadRepository<T extends DynamoItem>
       ? (unmarshall(response.LastEvaluatedKey) as unknown as Key)
       : undefined;
 
-    this.eventLogger.queryExecuted(condition.build(), items, lastEvaluatedKey);
+    this.eventLogger?.queryExecuted(condition.build(), items, lastEvaluatedKey);
 
     return {
       items,

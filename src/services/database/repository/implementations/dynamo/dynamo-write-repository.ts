@@ -42,8 +42,8 @@ export class DynamoWriteRepository<T extends DynamoItem>
    */
   constructor(
     private readonly schema: DynamoSchema<T>,
-    private readonly eventLogger: DynamoWriteRepositoryEventLogger<T>,
-    region: string,
+    private readonly eventLogger?: DynamoWriteRepositoryEventLogger<T>,
+    region?: string,
   ) {
     this.client = new DynamoDBClient(region ? { region: region } : {});
     this.tableName = this.schema.getTableName();
@@ -67,7 +67,7 @@ export class DynamoWriteRepository<T extends DynamoItem>
 
     await this.client.send(command);
 
-    this.eventLogger.itemCreated(item);
+    this.eventLogger?.itemCreated(item);
 
     return item;
   }
@@ -147,7 +147,7 @@ export class DynamoWriteRepository<T extends DynamoItem>
 
     const response: UpdateItemCommandOutput = await this.client.send(command);
 
-    this.eventLogger.itemUpdated(key, update.build(), condition.build());
+    this.eventLogger?.itemUpdated(key, update.build(), condition.build());
 
     return response.Attributes ? (unmarshall(response.Attributes) as T) : null;
   }
