@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/atolini/cloud-adapter-kit/compare/v2.0.0...v2.0.1) (2025-06-05)
+
+
+### Bug Fixes
+
+* **database/repository/dynamo:** make the eventLogger and region parameters optional in the constructors of DynamoReadRepository and DynamoWriteRepository ([1d4954b](https://github.com/atolini/cloud-adapter-kit/commit/1d4954b7931315bbe83813a25e3fda344568643d))
+
 # [2.0.0](https://github.com/atolini/cloud-adapter-kit/compare/v1.0.0...v2.0.0) (2025-05-29)
 
 
