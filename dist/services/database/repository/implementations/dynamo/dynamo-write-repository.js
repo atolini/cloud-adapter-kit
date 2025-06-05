@@ -39,7 +39,7 @@ export class DynamoWriteRepository {
         };
         const command = new PutItemCommand(params);
         await this.client.send(command);
-        this.eventLogger.itemCreated(item);
+        this.eventLogger?.itemCreated(item);
         return item;
     }
     /**
@@ -85,7 +85,7 @@ export class DynamoWriteRepository {
         }
         const command = new UpdateItemCommand(params);
         const response = await this.client.send(command);
-        this.eventLogger.itemUpdated(key, update.build(), condition.build());
+        this.eventLogger?.itemUpdated(key, update.build(), condition.build());
         return response.Attributes ? unmarshall(response.Attributes) : null;
     }
 }

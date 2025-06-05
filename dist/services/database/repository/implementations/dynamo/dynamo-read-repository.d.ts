@@ -11,7 +11,7 @@ import { DynamoSchema } from '@database/schema/implementations/dynamo';
  */
 export declare class DynamoReadRepository<T extends DynamoItem> implements IReadRepository<T, Key, DynamoConditionBuilder> {
     private readonly schema;
-    private readonly eventLogger;
+    private readonly eventLogger?;
     private readonly client;
     private readonly tableName;
     /**
@@ -21,7 +21,7 @@ export declare class DynamoReadRepository<T extends DynamoItem> implements IRead
      * @param eventLogger Logger used to track read events on the table.
      * @param region AWS region where the DynamoDB table is located.
      */
-    constructor(schema: DynamoSchema<T>, eventLogger: DynamoReadRepositoryEventLogger<T>, region: string);
+    constructor(schema: DynamoSchema<T>, eventLogger?: DynamoReadRepositoryEventLogger<T>, region?: string);
     /**
      * Fetches a single item from the table using the provided key.
      *

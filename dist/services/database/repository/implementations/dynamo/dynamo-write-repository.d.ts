@@ -11,7 +11,7 @@ import { DynamoUpdateBuilder } from '@database/update-builder/implementations/dy
  */
 export declare class DynamoWriteRepository<T extends DynamoItem> implements IWriteRepository<T, Key, DynamoConditionBuilder, DynamoUpdateBuilder> {
     private readonly schema;
-    private readonly eventLogger;
+    private readonly eventLogger?;
     private readonly client;
     private readonly tableName;
     /**
@@ -21,7 +21,7 @@ export declare class DynamoWriteRepository<T extends DynamoItem> implements IWri
      * @param eventLogger - Logger for tracking repository events such as creation, update, and deletion.
      * @param region - AWS region to configure the DynamoDB client.
      */
-    constructor(schema: DynamoSchema<T>, eventLogger: DynamoWriteRepositoryEventLogger<T>, region: string);
+    constructor(schema: DynamoSchema<T>, eventLogger?: DynamoWriteRepositoryEventLogger<T>, region?: string);
     /**
      * Inserts a new item into the DynamoDB table.
      *

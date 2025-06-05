@@ -42,7 +42,7 @@ export class DynamoReadRepository {
         const item = response.Item
             ? unmarshall(response.Item)
             : null;
-        this.eventLogger.itemFetched(key, item);
+        this.eventLogger?.itemFetched(key, item);
         return item;
     }
     /**
@@ -79,7 +79,7 @@ export class DynamoReadRepository {
         const lastEvaluatedKey = response.LastEvaluatedKey
             ? unmarshall(response.LastEvaluatedKey)
             : undefined;
-        this.eventLogger.queryExecuted(condition.build(), items, lastEvaluatedKey);
+        this.eventLogger?.queryExecuted(condition.build(), items, lastEvaluatedKey);
         return {
             items,
             lastEvaluatedKey,
