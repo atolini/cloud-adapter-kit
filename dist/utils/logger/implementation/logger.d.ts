@@ -1,7 +1,6 @@
 import { ILogger } from '@logger/contracts';
 import { LoggerContext } from '.';
 /**
- *
  * Structured logger for JSON-based logging, optimized for AWS CloudWatch.
  *
  * Automatically includes contextual metadata (e.g., requestId, service name, userId)
@@ -20,16 +19,22 @@ import { LoggerContext } from '.';
  * logger.info('User created successfully');
  * logger.warn({ action: 'validateInput', warning: 'Missing optional field' });
  * logger.error({ errorCode: 'USER_CREATION_FAILED', reason: 'Email already in use' });
+ *
+ * @example
+ * // Logger with no context
+ * const logger = new Logger();
+ * logger.info('System started');
  */
 export declare class Logger implements ILogger<LoggerContext> {
     private readonly baseContext;
     /**
-     * Creates a new instance of the Logger with a fixed context.
+     * Creates a new instance of the Logger with optional context.
      * The context is merged into every log entry as top-level keys.
      *
-     * @param contextItem - A flat object containing static context information (e.g., service name, request ID, user ID).
+     * @param contextItem - (Optional) A flat object containing static context information
+     *                      (e.g., service name, request ID, user ID).
      */
-    constructor(contextItem: LoggerContext);
+    constructor(contextItem?: LoggerContext);
     /**
      * Logs a warning-level message.
      *
@@ -50,7 +55,7 @@ export declare class Logger implements ILogger<LoggerContext> {
     info(item: object | string): void;
     /**
      * Internal method to output a structured log entry to the console.
-     * Automatically includes the log level, timestamp, and base context.
+     * Automatically includes the log level, timestamp, and any base context provided.
      *
      * @param level - The severity level of the log ('info', 'warn', or 'error').
      * @param item - A string message or a flat object with additional log details.
