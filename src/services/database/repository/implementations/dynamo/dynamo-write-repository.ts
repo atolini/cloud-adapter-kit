@@ -30,22 +30,20 @@ export class DynamoWriteRepository<T extends DynamoItem>
   implements
     IWriteRepository<T, Key, DynamoConditionBuilder, DynamoUpdateBuilder>
 {
-  private readonly client: DynamoDBClient;
   private readonly tableName: string;
 
   /**
    * Creates a new instance of DynamoWriteRepository.
    *
    * @param schema - The schema that defines the structure and validation of the items.
-   * @param eventLogger - Logger for tracking repository events such as creation, update, and deletion.
-   * @param region - AWS region to configure the DynamoDB client.
+   * @param client The DynamoDB client used to interact with the table.
+   * @param eventLogger - (Optional) Logger for tracking repository events such as creation, update, and deletion.
    */
   constructor(
     private readonly schema: DynamoSchema<T>,
+    private readonly client: DynamoDBClient,
     private readonly eventLogger?: DynamoWriteRepositoryEventLogger<T>,
-    region?: string,
   ) {
-    this.client = new DynamoDBClient(region ? { region: region } : {});
     this.tableName = this.schema.getTableName();
   }
 
