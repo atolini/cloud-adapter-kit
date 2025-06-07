@@ -32,7 +32,7 @@ import { InvalidKeyError } from '@database/schema/implementations/dynamo';
  * - **ResourceNotFoundException**: The specified table or index does not exist.
  * - **TransactionConflictException**: A conflict occurred during a transactional operation.
  */
-export class DynamoWriteErrorHandler<T, R extends IResponseBuilder<T>>
+export class DynamoWriteRepositoryErrorHandler<T, R extends IResponseBuilder<T>>
   implements IErrorActions<T, R>
 {
   private readonly handledErrors = new Set([
