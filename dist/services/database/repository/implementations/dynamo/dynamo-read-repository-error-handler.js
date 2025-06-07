@@ -4,7 +4,7 @@ import { InvalidKeyError } from '@database/schema/implementations/dynamo';
  * @template T - Response type
  * @template R - Response builder type
  *
- * Handles a specific set of exceptions thrown during DynamoDB repository operations.
+ * Handles a specific set of exceptions thrown during DynamoDB read operations.
  *
  * This class provides centralized error handling for the following exceptions:
  *
@@ -14,7 +14,7 @@ import { InvalidKeyError } from '@database/schema/implementations/dynamo';
  * - **RequestLimitExceeded**: The request limit for the account has been exceeded.
  * - **ResourceNotFoundException**: The specified table or index does not exist.
  */
-export class DynamoErrorHandler {
+export class DynamoReadRepositoryErrorHandler {
     retryableErrors = new Set([
         InternalServerError,
         InvalidEndpointException,

@@ -5,7 +5,7 @@ import { IErrorActions } from '@error-handler/contracts';
  * @template T - Response type
  * @template R - Response builder type
  *
- * Handles a specific set of exceptions thrown during DynamoDB repository operations.
+ * Handles a specific set of exceptions thrown during DynamoDB read operations.
  *
  * This class provides centralized error handling for the following exceptions:
  *
@@ -15,7 +15,7 @@ import { IErrorActions } from '@error-handler/contracts';
  * - **RequestLimitExceeded**: The request limit for the account has been exceeded.
  * - **ResourceNotFoundException**: The specified table or index does not exist.
  */
-export declare class DynamoErrorHandler<T, R extends IResponseBuilder<T>> implements IErrorActions<T, R> {
+export declare class DynamoReadRepositoryErrorHandler<T, R extends IResponseBuilder<T>> implements IErrorActions<T, R> {
     private readonly retryableErrors;
     /**
      * Checks if the provided error is one of the handled DynamoDB exceptions.

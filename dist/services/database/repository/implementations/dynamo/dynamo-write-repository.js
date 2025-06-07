@@ -1,4 +1,4 @@
-import { DeleteItemCommand, DynamoDBClient, PutItemCommand, UpdateItemCommand, } from '@aws-sdk/client-dynamodb';
+import { DeleteItemCommand, PutItemCommand, UpdateItemCommand, } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { merge } from 'lodash';
 /**
@@ -9,20 +9,20 @@ import { merge } from 'lodash';
  */
 export class DynamoWriteRepository {
     schema;
-    eventLogger;
     client;
+    eventLogger;
     tableName;
     /**
      * Creates a new instance of DynamoWriteRepository.
      *
      * @param schema - The schema that defines the structure and validation of the items.
-     * @param eventLogger - Logger for tracking repository events such as creation, update, and deletion.
-     * @param region - AWS region to configure the DynamoDB client.
+     * @param client The DynamoDB client used to interact with the table.
+     * @param eventLogger - (Optional) Logger for tracking repository events such as creation, update, and deletion.
      */
-    constructor(schema, eventLogger, region) {
+    constructor(schema, client, eventLogger) {
         this.schema = schema;
+        this.client = client;
         this.eventLogger = eventLogger;
-        this.client = new DynamoDBClient(region ? { region: region } : {});
         this.tableName = this.schema.getTableName();
     }
     /**

@@ -19,7 +19,7 @@ import { IErrorActions } from '@error-handler/contracts';
  * - **ResourceNotFoundException**: The specified table or index does not exist.
  * - **TransactionConflictException**: A conflict occurred during a transactional operation.
  */
-export declare class DynamoWriteErrorHandler<T, R extends IResponseBuilder<T>> implements IErrorActions<T, R> {
+export declare class DynamoWriteRepositoryErrorHandler<T, R extends IResponseBuilder<T>> implements IErrorActions<T, R> {
     private readonly handledErrors;
     /**
      * Checks if the provided error is one of the handled DynamoDB exceptions.

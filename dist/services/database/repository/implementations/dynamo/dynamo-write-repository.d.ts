@@ -1,3 +1,4 @@
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoConditionBuilder } from '@database/condition-builder/implementations/dynamo';
 import { IWriteRepository } from '@database/repository/contracts';
 import { DynamoItem, DynamoWriteRepositoryEventLogger, Key } from '@database/repository/implementations/dynamo';
@@ -11,17 +12,17 @@ import { DynamoUpdateBuilder } from '@database/update-builder/implementations/dy
  */
 export declare class DynamoWriteRepository<T extends DynamoItem> implements IWriteRepository<T, Key, DynamoConditionBuilder, DynamoUpdateBuilder> {
     private readonly schema;
-    private readonly eventLogger?;
     private readonly client;
+    private readonly eventLogger?;
     private readonly tableName;
     /**
      * Creates a new instance of DynamoWriteRepository.
      *
      * @param schema - The schema that defines the structure and validation of the items.
-     * @param eventLogger - Logger for tracking repository events such as creation, update, and deletion.
-     * @param region - AWS region to configure the DynamoDB client.
+     * @param client The DynamoDB client used to interact with the table.
+     * @param eventLogger - (Optional) Logger for tracking repository events such as creation, update, and deletion.
      */
-    constructor(schema: DynamoSchema<T>, eventLogger?: DynamoWriteRepositoryEventLogger<T>, region?: string);
+    constructor(schema: DynamoSchema<T>, client: DynamoDBClient, eventLogger?: DynamoWriteRepositoryEventLogger<T>);
     /**
      * Inserts a new item into the DynamoDB table.
      *

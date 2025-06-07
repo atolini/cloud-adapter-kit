@@ -1,4 +1,4 @@
-import { DynamoDBClient, GetItemCommand, QueryCommand, } from '@aws-sdk/client-dynamodb';
+import { GetItemCommand, QueryCommand, } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 /**
  * @template T The type of item stored in the DynamoDB table.
@@ -9,20 +9,20 @@ import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
  */
 export class DynamoReadRepository {
     schema;
-    eventLogger;
     client;
+    eventLogger;
     tableName;
     /**
      * Constructs a new instance of DynamoReadRepository.
      *
      * @param schema The schema used to validate and describe the table structure.
-     * @param eventLogger Logger used to track read events on the table.
-     * @param region AWS region where the DynamoDB table is located.
+     * @param client The DynamoDB client used to interact with the table.
+     * @param eventLogger (Optional) Logger used to track read events on the table.
      */
-    constructor(schema, eventLogger, region) {
+    constructor(schema, client, eventLogger) {
         this.schema = schema;
+        this.client = client;
         this.eventLogger = eventLogger;
-        this.client = new DynamoDBClient(region ? { region: region } : {});
         this.tableName = this.schema.getTableName();
     }
     /**
