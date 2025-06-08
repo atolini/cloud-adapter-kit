@@ -28,4 +28,12 @@ export interface ILogger<T> {
    * @param item - A string message or a flat object containing informational details.
    */
   info(item: object | string): void;
+
+  /**
+   * Updates the context for subsequent log entries.
+   * 
+   * @param newContext - Partial context to merge into the current context.
+   *                     Existing keys are overwritten by new values if present.
+   */
+  updateContext(newContext: Partial<T>): void;
 }
