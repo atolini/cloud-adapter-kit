@@ -8,7 +8,6 @@ import {
   TransactionCanceledException,
   TransactionInProgressException,
 } from '@aws-sdk/client-dynamodb';
-import { InvalidKeyError } from '@database/schema/implementations/dynamo';
 import { IErrorActions } from '@error-handler/contracts';
 import { ILogger } from '@logger/contracts';
 import { IResponseBuilder } from '@response-builder/contracts';
@@ -120,13 +119,6 @@ export class DynamoTransactionWriterErrorHandler<
         response: () =>
           resBuilder.tooManyRequests(
             'Transaction in progress. Please try again later.',
-          ),
-      },
-      {
-        type: InvalidKeyError,
-        response: () =>
-          resBuilder.badRequest(
-            'Invalid key. Please check the request parameters.',
           ),
       },
     ];
