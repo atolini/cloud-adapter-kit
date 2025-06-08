@@ -72,7 +72,7 @@ export class ErrorHandler<T, R extends IResponseBuilder<T>> {
         'An unexpected error occurred. Please check the application logs for more details.',
       message: error.message,
       name: error.name,
-      error: error,
+      stack: error.stack ? error.stack : 'Stack undefined in error object',
     });
 
     // Return a generic internal error response
