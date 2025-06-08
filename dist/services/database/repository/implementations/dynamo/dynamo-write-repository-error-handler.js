@@ -1,5 +1,4 @@
 import { ConditionalCheckFailedException, InternalServerError, InvalidEndpointException, ItemCollectionSizeLimitExceededException, ProvisionedThroughputExceededException, ReplicatedWriteConflictException, RequestLimitExceeded, ResourceNotFoundException, TransactionConflictException, } from '@aws-sdk/client-dynamodb';
-import { InvalidKeyError } from '../../../schema/implementations/dynamo';
 export class DynamoWriteRepositoryErrorHandler {
     handledErrors = new Set([
         ConditionalCheckFailedException,
@@ -52,10 +51,6 @@ export class DynamoWriteRepositoryErrorHandler {
             {
                 type: TransactionConflictException,
                 response: () => resBuilder.tooManyRequests('Transaction conflict. Please try again later.'),
-            },
-            {
-                type: InvalidKeyError,
-                response: () => resBuilder.badRequest('Invalid key. Please check the request parameters.'),
             },
         ];
         for (const entry of errorMap) {

@@ -1,5 +1,4 @@
 import { IdempotentParameterMismatchException, InternalServerError, InvalidEndpointException, ProvisionedThroughputExceededException, RequestLimitExceeded, ResourceNotFoundException, TransactionCanceledException, TransactionInProgressException, } from '@aws-sdk/client-dynamodb';
-import { InvalidKeyError } from '../../../schema/implementations/dynamo';
 export class DynamoTransactionWriterErrorHandler {
     retryableErrors = new Set([
         IdempotentParameterMismatchException,
@@ -47,10 +46,6 @@ export class DynamoTransactionWriterErrorHandler {
             {
                 type: TransactionInProgressException,
                 response: () => resBuilder.tooManyRequests('Transaction in progress. Please try again later.'),
-            },
-            {
-                type: InvalidKeyError,
-                response: () => resBuilder.badRequest('Invalid key. Please check the request parameters.'),
             },
         ];
         for (const entry of errorMap) {

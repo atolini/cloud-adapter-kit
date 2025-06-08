@@ -1,5 +1,4 @@
 import { InternalServerError, InvalidEndpointException, ProvisionedThroughputExceededException, RequestLimitExceeded, ResourceNotFoundException, } from '@aws-sdk/client-dynamodb';
-import { InvalidKeyError } from '../../../schema/implementations/dynamo';
 export class DynamoReadRepositoryErrorHandler {
     retryableErrors = new Set([
         InternalServerError,
@@ -37,10 +36,6 @@ export class DynamoReadRepositoryErrorHandler {
                 type: ResourceNotFoundException,
                 log: {},
                 response: () => resBuilder.notFound('The specified resource was not found.'),
-            },
-            {
-                type: InvalidKeyError,
-                response: () => resBuilder.badRequest('Invalid key. Please check the request parameters.'),
             },
         ];
         for (const entry of errorMap) {
