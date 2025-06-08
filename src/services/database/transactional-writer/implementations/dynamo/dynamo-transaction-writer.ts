@@ -4,6 +4,7 @@ import {
   TransactWriteItemsCommand,
   TransactWriteItemsInput,
 } from '@aws-sdk/client-dynamodb';
+import { marshall } from '@aws-sdk/util-dynamodb';
 import { DynamoSchema } from '@database/schema/implementations/dynamo';
 import {
   ITransactionalWriter,
@@ -55,7 +56,7 @@ export class DynamoTransactionWriter
     const transacts = units.map((unit) => ({
       Put: {
         TableName: unit.container.getTableName(),
-        Item: unit.item,
+        Item: marshall(unit.item),
       } as TransactWriteItem,
     })) as TransactWriteItem[];
 
