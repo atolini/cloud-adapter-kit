@@ -1,1 +1,1 @@
-{"version":3,"file":"key-config.d.ts","sourceRoot":"","sources":["../../../../../../src/services/database/schema/implementations/dynamo/key-config.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,MAAM,WAAW,SAAS;IACxB,0EAA0E;IAC1E,IAAI,EAAE,MAAM,CAAC;IAEb,4EAA4E;IAC5E,IAAI,EAAE,QAAQ,GAAG,QAAQ,CAAC;CAC3B"}
+{"version":3,"file":"key-config.d.ts","sourceRoot":"","sources":["../../../../../../src/services/database/schema/implementations/dynamo/key-config.ts"],"names":[],"mappings":"AAOA,MAAM,WAAW,SAAS;IAExB,IAAI,EAAE,MAAM,CAAC;IAGb,IAAI,EAAE,QAAQ,GAAG,QAAQ,CAAC;CAC3B"}

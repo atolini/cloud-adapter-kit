@@ -1,1 +1,1 @@
-{"version":3,"file":"i-event.d.ts","sourceRoot":"","sources":["../../../../src/utils/event/contracts/i-event.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AACH,MAAM,WAAW,MAAM;IACrB;;;;OAIG;IACH,YAAY,IAAI,IAAI,CAAC;IAErB;;;;OAIG;IACH,QAAQ,IAAI,MAAM,CAAC;IAEnB;;;;OAIG;IACH,OAAO,IAAI,MAAM,CAAC;CACnB"}
+{"version":3,"file":"i-event.d.ts","sourceRoot":"","sources":["../../../../src/utils/event/contracts/i-event.ts"],"names":[],"mappings":"AAKA,MAAM,WAAW,MAAM;IAMrB,YAAY,IAAI,IAAI,CAAC;IAOrB,QAAQ,IAAI,MAAM,CAAC;IAOnB,OAAO,IAAI,MAAM,CAAC;CACnB"}

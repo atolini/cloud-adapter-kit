@@ -1,22 +1,5 @@
 import { ResourceNotFoundException, AccessDeniedException, ValidationException, ThrottlingException, InternalServerException, } from '@aws-sdk/client-verifiedpermissions';
-/**
- * @template T - Response type
- * @template R - Response builder type
- *
- * Handles exceptions thrown within the {@link AVPAuthorizationService} class.
- *
- * The following exceptions may be handled by this class:
- *
- * - **ResourceNotFoundException**: Thrown if the resource does not exist.
- * - **AccessDeniedException**: Thrown if the caller does not have permission to perform the action.
- * - **ValidationException**: Thrown if the request parameters are invalid.
- * - **ThrottlingException**: Thrown if the request is throttled due to exceeding usage limits.
- * - **InternalServerException**: Thrown if an internal server error occurs.
- */
 export class AVPAuthorizationServiceErrorHandler {
-    /**
-     *
-     */
     canHandle(error) {
         return (error instanceof ResourceNotFoundException ||
             error instanceof AccessDeniedException ||
@@ -24,9 +7,6 @@ export class AVPAuthorizationServiceErrorHandler {
             error instanceof ThrottlingException ||
             error instanceof InternalServerException);
     }
-    /**
-     *
-     */
     handle(error, logger, resBuilder) {
         const errorMap = [
             {
