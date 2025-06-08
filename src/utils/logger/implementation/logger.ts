@@ -27,7 +27,7 @@ import { LoggerContext } from '.';
  * logger.info('System started');
  */
 export class Logger implements ILogger<LoggerContext> {
-  private readonly baseContext: Record<string, string>;
+  private baseContext: Record<string, string>;
 
   /**
    * Creates a new instance of the Logger with optional context.
@@ -65,6 +65,16 @@ export class Logger implements ILogger<LoggerContext> {
    */
   info(item: object | string): void {
     this.log('info', item);
+  }
+
+  /**
+   * Updates the internal logging context by merging the provided partial context.
+   * Existing keys are overwritten by new values if present.
+   *
+   * @param {Partial<LoggerContext>} newContext - Partial context to merge into the current base context.
+   */
+  updateContext(newContext: Partial<LoggerContext>): void {
+    this.baseContext = { ...this.baseContext, ...newContext };
   }
 
   /**
