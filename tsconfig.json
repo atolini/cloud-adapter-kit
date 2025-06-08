@@ -9,6 +9,7 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
+    "removeComments": true,
     "baseUrl": "./src",
     "paths": {
       "@user-directory/*": ["services/user-directory/*"],
