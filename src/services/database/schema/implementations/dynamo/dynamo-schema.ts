@@ -79,15 +79,23 @@ export class DynamoSchema<T> implements IDatabaseSchema<Record<string, unknown>,
     const value = key[field.name];
 
     if (value === undefined) {
-      throw new InvalidKeyError(`Missing required key: ${field.name}`);
+      throw new InvalidKeyError({
+        tableName: this.tableName,
+        receivedKey: key,
+        expectedKey: { [field.name]: field.type },
+        message: `Missing required key field "${field.name}".`,
+      });
     }
 
     const actualType = typeof value;
 
     if (actualType !== field.type) {
-      throw new InvalidKeyError(
-        `Invalid type for key "${field.name}". Expected "${field.type}", got "${actualType}".`,
-      );
+      throw new InvalidKeyError({
+        tableName: this.tableName,
+        receivedKey: key,
+        expectedKey: { [field.name]: field.type },
+        message: `Invalid type for key field "${field.name}": expected "${field.type}", got "${actualType}".`,
+      });
     }
   }
 }
