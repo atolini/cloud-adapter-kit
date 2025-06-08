@@ -16,7 +16,7 @@ export class ErrorHandler {
             description: 'An unexpected error occurred. Please check the application logs for more details.',
             message: error.message,
             name: error.name,
-            error: error,
+            stack: error.stack ? error.stack : 'Stack undefined in error object',
         });
         return this.resBuilder.internalError('Unhandled error');
     }

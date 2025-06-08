@@ -1,4 +1,5 @@
 import { DynamoDBClient, TransactWriteItemsCommand, } from '@aws-sdk/client-dynamodb';
+import { marshall } from '@aws-sdk/util-dynamodb';
 import { MaxItemsExceededError, } from '../../../transactional-writer/implementations/dynamo';
 import { v4 as uuidv4 } from 'uuid';
 export class DynamoTransactionWriter {
@@ -13,7 +14,7 @@ export class DynamoTransactionWriter {
         const transacts = units.map((unit) => ({
             Put: {
                 TableName: unit.container.getTableName(),
-                Item: unit.item,
+                Item: marshall(unit.item),
             },
         }));
         const params = {
