@@ -12,6 +12,9 @@ export class Logger {
     info(item) {
         this.log('info', item);
     }
+    updateContext(newContext) {
+        this.baseContext = { ...this.baseContext, ...newContext };
+    }
     log(level, item) {
         const logEntry = {
             level,
