@@ -13,8 +13,9 @@ import {
 import {
   MaxItemsExceededError,
 } from '@database/transactional-writer/implementations/dynamo';
-import { v4 as uuidv4 } from 'uuid';
 import { createHash } from 'crypto';
+
+export type Units = ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]
 
 /**
  * Provides a transactional writer implementation for DynamoDB using AWS SDK.
@@ -46,7 +47,7 @@ export class DynamoTransactionWriter
    * hashes of all items to enable idempotent transactional writes, avoiding duplicate processing
    * in case of retries or cascaded calls.
    *
-   * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
+   * @param {Units} units -
    * An array of transactional write units, each containing a schema container and an item to be written.
    *
    * @returns {Promise<void>} A promise that resolves when the transaction is successfully committed.
@@ -54,18 +55,12 @@ export class DynamoTransactionWriter
    * @throws {MaxItemsExceededError} If the number of items exceeds DynamoDB's transactional write limit.
    */
   async write(
-    units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[],
+    units: Units,
   ): Promise<void> {
     this.validateBatchSize(units);
     this.validateKeys(units);
 
-    const unitsWithHash = units.map((unit) => ({
-      container: unit.container,
-      item: {
-        ...unit.item,
-        hash: this.hashItem(unit.item),
-      },
-    }));
+    const unitsWithHash = this.ensureItemHasHash(units);
 
     const transacts = this.buildTransactItems(unitsWithHash);
 
@@ -86,11 +81,11 @@ export class DynamoTransactionWriter
    * defined in its container.
    *
    * @private
-   * @param {ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]} units -
+   * @param {Units} units -
    * The units whose item keys will be validated.
    */
   private validateKeys(
-    units: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[],
+    units: Units,
   ) {
     for (const unit of units) {
       unit.container.validateKey(unit.item);
@@ -142,7 +137,7 @@ export class DynamoTransactionWriter
    * @returns An array of TransactWriteItem ready for a DynamoDB transaction.
    */
   private buildTransactItems(
-    unitsWithHash: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[],
+    unitsWithHash: Units,
   ): TransactWriteItem[] {
     return unitsWithHash.map(({ container, item }) => {
       const pkName = container.getPartitionKey().name;
@@ -189,7 +184,7 @@ export class DynamoTransactionWriter
    * of all items in the transaction.
    */
   private buildClientRequestToken(
-    unitsWithHash: ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]
+    unitsWithHash: Units
   ): string {
     const combinedHash = unitsWithHash
       .map(unit => unit.item.hash)
@@ -197,5 +192,25 @@ export class DynamoTransactionWriter
       .join('|');
 
     return createHash('sha256').update(combinedHash).digest('hex');
+  }
+
+  /**
+   * Defines a batch of transactional writer units to be written to DynamoDB.
+   * Each unit includes a schema container and a data item, which may or may not
+   * include a `hash` used for idempotency and concurrency control.
+   *
+   * This type is used throughout the `DynamoTransactionWriter` to represent
+   * groups of items that must be written atomically within a transaction.
+   */
+  private ensureItemHasHash(units: Units): Units {
+    return units.map((unit) => ({
+      container: unit.container,
+      item: unit.item.hash
+        ? unit.item
+        : {
+          ...unit.item,
+          hash: this.hashItem(unit.item),
+        },
+    }));
   }
 }
