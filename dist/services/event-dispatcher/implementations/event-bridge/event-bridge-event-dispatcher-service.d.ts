@@ -1,3 +1,4 @@
+import { EventBridgeClient } from '@aws-sdk/client-eventbridge';
 import { IEventDispatcherService, IEventDispatcherServiceEventLogger } from '../../contracts';
 import { EventWrapper } from '.';
 export declare class EventBridgeEventDispatcherService implements IEventDispatcherService<EventWrapper> {
@@ -5,7 +6,7 @@ export declare class EventBridgeEventDispatcherService implements IEventDispatch
     private readonly service;
     private readonly eventLogger;
     private readonly client;
-    constructor(eventBusName: string, service: string, eventLogger: IEventDispatcherServiceEventLogger<EventWrapper>, region?: string);
+    constructor(eventBusName: string, service: string, eventLogger: IEventDispatcherServiceEventLogger<EventWrapper>, client: EventBridgeClient);
     publish(event: EventWrapper): Promise<void>;
     publishAll(events: EventWrapper[]): Promise<void>;
     private sendCommand;

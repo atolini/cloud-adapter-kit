@@ -1,14 +1,14 @@
-import { EventBridgeClient, PutEventsCommand, } from '@aws-sdk/client-eventbridge';
+import { PutEventsCommand, } from '@aws-sdk/client-eventbridge';
 export class EventBridgeEventDispatcherService {
     eventBusName;
     service;
     eventLogger;
     client;
-    constructor(eventBusName, service, eventLogger, region) {
+    constructor(eventBusName, service, eventLogger, client) {
         this.eventBusName = eventBusName;
         this.service = service;
         this.eventLogger = eventLogger;
-        this.client = new EventBridgeClient(region ? { region } : {});
+        this.client = client;
     }
     async publish(event) {
         const entry = this.toEventBridgeEntry(event);

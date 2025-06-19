@@ -37,4 +37,13 @@ export class DynamoSchema {
             });
         }
     }
+    hasSortKey() {
+        return this.sortKey !== undefined;
+    }
+    getPartitionKey() {
+        return { ...this.partitionKey };
+    }
+    getSortKey() {
+        return this.sortKey ? { ...this.sortKey } : null;
+    }
 }

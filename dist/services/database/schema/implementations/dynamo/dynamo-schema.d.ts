@@ -8,5 +8,8 @@ export declare class DynamoSchema<T> implements IDatabaseSchema<Record<string, u
     getTableName(): string;
     validateKey(key: Record<string, unknown> | T): void;
     private validateField;
+    hasSortKey(): boolean;
+    getPartitionKey(): KeyConfig;
+    getSortKey(): KeyConfig | null;
 }
 //# sourceMappingURL=dynamo-schema.d.ts.map
