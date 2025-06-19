@@ -33,24 +33,21 @@ import { EventWrapper } from '.';
 export class EventBridgeEventDispatcherService
   implements IEventDispatcherService<EventWrapper>
 {
-  private readonly client: EventBridgeClient;
 
   /**
    * Creates an instance of EventBridgeEventDispatcherService.
-   *
-   * @param {string} eventBusName - The name of the EventBridge event bus to which events will be published.
-   * @param {string} service - The name of the service or source publishing the events.
-   * @param {IEventDispatcherServiceEventLogger<EventWrapper>} eventLogger - Logger instance for event publishing actions.
-   * @param {string} [region] - Optional AWS region. If not provided, uses the default SDK configuration.
+   * 
+   * @param eventBusName - The name of the EventBridge event bus.
+   * @param service - The name of the service or source.
+   * @param eventLogger - Logger instance for event publishing.
+   * @param client - An instance of EventBridgeClient (allows external injection).
    */
   constructor(
     private readonly eventBusName: string,
     private readonly service: string,
     private readonly eventLogger: IEventDispatcherServiceEventLogger<EventWrapper>,
-    region?: string,
-  ) {
-    this.client = new EventBridgeClient(region ? { region } : {});
-  }
+    private readonly client: EventBridgeClient
+  ) {}
 
   /**
    * Publishes a single event to AWS EventBridge.
