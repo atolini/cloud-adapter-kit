@@ -98,4 +98,24 @@ export class DynamoSchema<T> implements IDatabaseSchema<Record<string, unknown>,
       });
     }
   }
+
+  /**
+   * Checks whether the schema includes a configured sort key.
+   *
+   * @returns {boolean} `true` if a sort key is defined in the schema; otherwise, `false`.
+   *
+   * @example
+   * const schema = new DynamoSchema('Users', { name: 'id', type: 'string' });
+   * schema.hasSortKey(); // false
+   *
+   * const compositeSchema = new DynamoSchema(
+   *   'Orders',
+   *   { name: 'customerId', type: 'string' },
+   *   { name: 'orderId', type: 'string' }
+   * );
+   * compositeSchema.hasSortKey(); // true
+   */
+  hasSortKey(): boolean {
+    return this.sortKey !== undefined;
+  }
 }
