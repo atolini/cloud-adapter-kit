@@ -1,4 +1,6 @@
-export interface ITransactionalWriterUnit<Container, Item> {
+export interface ITransactionalWriterUnit<Container, Item extends {
+    hash?: string;
+}> {
     container: Container;
     item: Item;
 }

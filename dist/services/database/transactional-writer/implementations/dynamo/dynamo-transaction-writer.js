@@ -11,13 +11,7 @@ export class DynamoTransactionWriter {
     async write(units) {
         this.validateBatchSize(units);
         this.validateKeys(units);
-        const unitsWithHash = units.map((unit) => ({
-            container: unit.container,
-            item: {
-                ...unit.item,
-                hash: this.hashItem(unit.item),
-            },
-        }));
+        const unitsWithHash = this.ensureItemHasHash(units);
         const transacts = this.buildTransactItems(unitsWithHash);
         const params = {
             TransactItems: transacts,
@@ -78,5 +72,16 @@ export class DynamoTransactionWriter {
             .sort()
             .join('|');
         return createHash('sha256').update(combinedHash).digest('hex');
+    }
+    ensureItemHasHash(units) {
+        return units.map((unit) => ({
+            container: unit.container,
+            item: unit.item.hash
+                ? unit.item
+                : {
+                    ...unit.item,
+                    hash: this.hashItem(unit.item),
+                },
+        }));
     }
 }
