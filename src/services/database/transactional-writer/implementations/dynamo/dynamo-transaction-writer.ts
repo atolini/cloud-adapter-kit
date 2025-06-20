@@ -35,7 +35,7 @@ export class DynamoTransactionWriter
   constructor(
     private readonly client: DynamoDBClient,
     private readonly logger?: DynamoTransactionWriterEventLogger
-  ) {}
+  ) { }
 
   /**
    * Writes a batch of items to DynamoDB transactionally.
@@ -143,7 +143,7 @@ export class DynamoTransactionWriter
           ? 'attribute_exists(#pk) AND attribute_exists(#sk) AND version = :expectedVersion'
           : 'attribute_exists(#pk) AND version = :expectedVersion';
 
-        return {
+        const result = {
           Put: {
             TableName: container.getTableName(),
             Item: marshall({ ...item, version: newVersion }, { removeUndefinedValues: true }),
@@ -157,13 +157,17 @@ export class DynamoTransactionWriter
             },
           },
         };
+
+        this.logger?.logTransactWriteCommand(result);
+
+        return result;
       }
 
       const condition = hasSortKey
         ? 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)'
         : 'attribute_not_exists(#pk)';
 
-      return {
+      const result = {
         Put: {
           TableName: container.getTableName(),
           Item: marshall({ ...item, version: newVersion }, { removeUndefinedValues: true }),
@@ -174,6 +178,10 @@ export class DynamoTransactionWriter
           },
         },
       };
+
+      this.logger?.logTransactWriteCommand(result);
+
+      return result;
     });
   }
 }
