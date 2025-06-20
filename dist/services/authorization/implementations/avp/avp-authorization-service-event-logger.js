@@ -1,4 +1,7 @@
-export class AVPAuthorizationServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AVPAuthorizationServiceEventLogger = void 0;
+class AVPAuthorizationServiceEventLogger {
     logger;
     policyStoreId;
     constructor(logger, policyStoreId) {
@@ -22,3 +25,4 @@ export class AVPAuthorizationServiceEventLogger {
         });
     }
 }
+exports.AVPAuthorizationServiceEventLogger = AVPAuthorizationServiceEventLogger;

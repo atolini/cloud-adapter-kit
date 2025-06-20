@@ -1,36 +1,39 @@
-import { ResourceNotFoundException, AccessDeniedException, ValidationException, ThrottlingException, InternalServerException, } from '@aws-sdk/client-verifiedpermissions';
-export class AVPAuthorizationServiceErrorHandler {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AVPAuthorizationServiceErrorHandler = void 0;
+const client_verifiedpermissions_1 = require("@aws-sdk/client-verifiedpermissions");
+class AVPAuthorizationServiceErrorHandler {
     canHandle(error) {
-        return (error instanceof ResourceNotFoundException ||
-            error instanceof AccessDeniedException ||
-            error instanceof ValidationException ||
-            error instanceof ThrottlingException ||
-            error instanceof InternalServerException);
+        return (error instanceof client_verifiedpermissions_1.ResourceNotFoundException ||
+            error instanceof client_verifiedpermissions_1.AccessDeniedException ||
+            error instanceof client_verifiedpermissions_1.ValidationException ||
+            error instanceof client_verifiedpermissions_1.ThrottlingException ||
+            error instanceof client_verifiedpermissions_1.InternalServerException);
     }
     handle(error, logger, resBuilder) {
         const errorMap = [
             {
-                type: ResourceNotFoundException,
+                type: client_verifiedpermissions_1.ResourceNotFoundException,
                 log: {},
                 response: () => resBuilder.notFound('The resource was not found'),
             },
             {
-                type: AccessDeniedException,
+                type: client_verifiedpermissions_1.AccessDeniedException,
                 log: {},
                 response: () => resBuilder.forbidden('Access denied for the requested action'),
             },
             {
-                type: ValidationException,
+                type: client_verifiedpermissions_1.ValidationException,
                 log: {},
                 response: () => resBuilder.badRequest('Invalid request parameters'),
             },
             {
-                type: ThrottlingException,
+                type: client_verifiedpermissions_1.ThrottlingException,
                 log: {},
                 response: () => resBuilder.tooManyRequests('Request was throttled due to exceeding usage limits'),
             },
             {
-                type: InternalServerException,
+                type: client_verifiedpermissions_1.InternalServerException,
                 log: {},
                 response: () => resBuilder.internalError('Internal server error occurred'),
             },
@@ -46,3 +49,4 @@ export class AVPAuthorizationServiceErrorHandler {
         }
     }
 }
+exports.AVPAuthorizationServiceErrorHandler = AVPAuthorizationServiceErrorHandler;

@@ -1,4 +1,7 @@
-export class APIGatewayResponseBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.APIGatewayResponseBuilder = void 0;
+class APIGatewayResponseBuilder {
     forbidden(message = 'Forbidden', details) {
         return {
             statusCode: 403,
@@ -56,3 +59,4 @@ export class APIGatewayResponseBuilder {
         };
     }
 }
+exports.APIGatewayResponseBuilder = APIGatewayResponseBuilder;

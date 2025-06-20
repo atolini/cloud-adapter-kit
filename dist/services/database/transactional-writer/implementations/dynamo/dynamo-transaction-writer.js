@@ -1,12 +1,15 @@
-import { DynamoDBClient, TransactWriteItemsCommand, } from '@aws-sdk/client-dynamodb';
-import { marshall } from '@aws-sdk/util-dynamodb';
-import { MaxItemsExceededError, } from '../../../transactional-writer/implementations/dynamo';
-import { createHash } from 'crypto';
-export class DynamoTransactionWriter {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoTransactionWriter = void 0;
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+const util_dynamodb_1 = require("@aws-sdk/util-dynamodb");
+const dynamo_1 = require("../../../transactional-writer/implementations/dynamo");
+const crypto_1 = require("crypto");
+class DynamoTransactionWriter {
     client;
     maxBatchItems = 100;
     constructor(region) {
-        this.client = new DynamoDBClient(region ? { region: region } : {});
+        this.client = new client_dynamodb_1.DynamoDBClient(region ? { region: region } : {});
     }
     async write(units) {
         this.validateBatchSize(units);
@@ -17,7 +20,7 @@ export class DynamoTransactionWriter {
             TransactItems: transacts,
             ClientRequestToken: this.buildClientRequestToken(unitsWithHash),
         };
-        const command = new TransactWriteItemsCommand(params);
+        const command = new client_dynamodb_1.TransactWriteItemsCommand(params);
         await this.client.send(command);
     }
     validateKeys(units) {
@@ -27,7 +30,7 @@ export class DynamoTransactionWriter {
     }
     validateBatchSize(units) {
         if (units.length > this.maxBatchItems) {
-            throw new MaxItemsExceededError(this.maxBatchItems);
+            throw new dynamo_1.MaxItemsExceededError(this.maxBatchItems);
         }
     }
     hashItem(item) {
@@ -38,7 +41,7 @@ export class DynamoTransactionWriter {
             return acc;
         }, {});
         const json = JSON.stringify(sorted);
-        return createHash('sha256').update(json).digest('hex');
+        return (0, crypto_1.createHash)('sha256').update(json).digest('hex');
     }
     buildTransactItems(unitsWithHash) {
         return unitsWithHash.map(({ container, item }) => {
@@ -58,7 +61,7 @@ export class DynamoTransactionWriter {
             return {
                 Put: {
                     TableName: container.getTableName(),
-                    Item: marshall(item),
+                    Item: (0, util_dynamodb_1.marshall)(item),
                     ConditionExpression: condition,
                     ExpressionAttributeNames: expressionNames,
                     ExpressionAttributeValues: expressionValues,
@@ -71,7 +74,7 @@ export class DynamoTransactionWriter {
             .map(unit => unit.item.hash)
             .sort()
             .join('|');
-        return createHash('sha256').update(combinedHash).digest('hex');
+        return (0, crypto_1.createHash)('sha256').update(combinedHash).digest('hex');
     }
     ensureItemHasHash(units) {
         return units.map((unit) => ({
@@ -85,3 +88,4 @@ export class DynamoTransactionWriter {
         }));
     }
 }
+exports.DynamoTransactionWriter = DynamoTransactionWriter;

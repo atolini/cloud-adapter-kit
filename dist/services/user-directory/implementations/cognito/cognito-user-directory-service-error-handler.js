@@ -1,73 +1,76 @@
-import { InvalidParameterException, UserNotFoundException, UsernameExistsException, LimitExceededException, InternalErrorException, InvalidPasswordException, NotAuthorizedException, TooManyRequestsException, InvalidEmailRoleAccessPolicyException, } from '@aws-sdk/client-cognito-identity-provider';
-export class CognitoUserDirectoryServiceErrorHandler {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CognitoUserDirectoryServiceErrorHandler = void 0;
+const client_cognito_identity_provider_1 = require("@aws-sdk/client-cognito-identity-provider");
+class CognitoUserDirectoryServiceErrorHandler {
     canHandle(error) {
-        return (error instanceof InternalErrorException ||
-            error instanceof InvalidParameterException ||
-            error instanceof InvalidPasswordException ||
-            error instanceof NotAuthorizedException ||
-            error instanceof UsernameExistsException ||
-            error instanceof TooManyRequestsException ||
-            error instanceof InvalidEmailRoleAccessPolicyException ||
-            error instanceof UserNotFoundException);
+        return (error instanceof client_cognito_identity_provider_1.InternalErrorException ||
+            error instanceof client_cognito_identity_provider_1.InvalidParameterException ||
+            error instanceof client_cognito_identity_provider_1.InvalidPasswordException ||
+            error instanceof client_cognito_identity_provider_1.NotAuthorizedException ||
+            error instanceof client_cognito_identity_provider_1.UsernameExistsException ||
+            error instanceof client_cognito_identity_provider_1.TooManyRequestsException ||
+            error instanceof client_cognito_identity_provider_1.InvalidEmailRoleAccessPolicyException ||
+            error instanceof client_cognito_identity_provider_1.UserNotFoundException);
     }
     handle(error, logger, resBuilder) {
-        if (error instanceof UserNotFoundException) {
+        if (error instanceof client_cognito_identity_provider_1.UserNotFoundException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.notFound(error.message);
         }
-        if (error instanceof InvalidParameterException) {
+        if (error instanceof client_cognito_identity_provider_1.InvalidParameterException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.badRequest('Invalid parameter in the request');
         }
-        if (error instanceof InvalidPasswordException) {
+        if (error instanceof client_cognito_identity_provider_1.InvalidPasswordException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.badRequest('Password does not meet requirements');
         }
-        if (error instanceof NotAuthorizedException) {
+        if (error instanceof client_cognito_identity_provider_1.NotAuthorizedException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.forbidden('Not authorized to perform this operation');
         }
-        if (error instanceof UsernameExistsException) {
+        if (error instanceof client_cognito_identity_provider_1.UsernameExistsException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.badRequest('User already exists');
         }
-        if (error instanceof TooManyRequestsException) {
+        if (error instanceof client_cognito_identity_provider_1.TooManyRequestsException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.tooManyRequests('Too many requests - throttling limit reached');
         }
-        if (error instanceof LimitExceededException) {
+        if (error instanceof client_cognito_identity_provider_1.LimitExceededException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.tooManyRequests('Request limit exceeded for Cognito');
         }
-        if (error instanceof InvalidEmailRoleAccessPolicyException) {
+        if (error instanceof client_cognito_identity_provider_1.InvalidEmailRoleAccessPolicyException) {
             logger.error({
                 name: error.name,
                 message: error.message,
             });
             return resBuilder.internalError('Invalid email role access policy configuration');
         }
-        if (error instanceof InternalErrorException) {
+        if (error instanceof client_cognito_identity_provider_1.InternalErrorException) {
             logger.error({
                 name: error.name,
                 message: error.message,
@@ -76,3 +79,4 @@ export class CognitoUserDirectoryServiceErrorHandler {
         }
     }
 }
+exports.CognitoUserDirectoryServiceErrorHandler = CognitoUserDirectoryServiceErrorHandler;

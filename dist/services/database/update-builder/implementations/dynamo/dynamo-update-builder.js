@@ -1,4 +1,7 @@
-export class DynamoUpdateBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoUpdateBuilder = void 0;
+class DynamoUpdateBuilder {
     updateExpressions = [];
     expressionAttributeNames = {};
     expressionAttributeValues = {};
@@ -41,3 +44,4 @@ export class DynamoUpdateBuilder {
         throw new Error(`Unsupported value type: ${typeof value}`);
     }
 }
+exports.DynamoUpdateBuilder = DynamoUpdateBuilder;

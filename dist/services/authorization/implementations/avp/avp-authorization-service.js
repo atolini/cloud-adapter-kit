@@ -1,12 +1,15 @@
-import { BatchIsAuthorizedCommand, BatchIsAuthorizedWithTokenCommand, IsAuthorizedCommand, IsAuthorizedWithTokenCommand, VerifiedPermissionsClient, } from '@aws-sdk/client-verifiedpermissions';
-export class AVPAuthorizationService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AVPAuthorizationService = void 0;
+const client_verifiedpermissions_1 = require("@aws-sdk/client-verifiedpermissions");
+class AVPAuthorizationService {
     client;
     policyStoreId;
     token;
     eventLogger;
     constructor(policyStoreId, eventLogger, token, clientConfig) {
         this.policyStoreId = policyStoreId;
-        this.client = new VerifiedPermissionsClient(clientConfig ?? clientConfig);
+        this.client = new client_verifiedpermissions_1.VerifiedPermissionsClient(clientConfig ?? clientConfig);
         this.token = token || null;
         this.eventLogger = eventLogger;
     }
@@ -22,12 +25,12 @@ export class AVPAuthorizationService {
             params['context'] = context;
         }
         const command = this.token
-            ? new IsAuthorizedWithTokenCommand({
+            ? new client_verifiedpermissions_1.IsAuthorizedWithTokenCommand({
                 ...params,
                 accessToken: this.token.accessToken,
                 identityToken: this.token.identityToken,
             })
-            : new IsAuthorizedCommand(params);
+            : new client_verifiedpermissions_1.IsAuthorizedCommand(params);
         const response = await this.client.send(command);
         const result = {
             resource: request.resource,
@@ -47,13 +50,13 @@ export class AVPAuthorizationService {
             };
         });
         const command = this.token
-            ? new BatchIsAuthorizedWithTokenCommand({
+            ? new client_verifiedpermissions_1.BatchIsAuthorizedWithTokenCommand({
                 policyStoreId: this.policyStoreId,
                 accessToken: this.token.accessToken,
                 identityToken: this.token.identityToken,
                 requests,
             })
-            : new BatchIsAuthorizedCommand({
+            : new client_verifiedpermissions_1.BatchIsAuthorizedCommand({
                 policyStoreId: this.policyStoreId,
                 requests,
             });
@@ -67,3 +70,4 @@ export class AVPAuthorizationService {
         return result;
     }
 }
+exports.AVPAuthorizationService = AVPAuthorizationService;

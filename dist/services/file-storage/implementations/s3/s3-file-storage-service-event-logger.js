@@ -1,4 +1,7 @@
-export class S3FileStorageServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.S3FileStorageServiceEventLogger = void 0;
+class S3FileStorageServiceEventLogger {
     logger;
     bucketName;
     constructor(logger, bucketName) {
@@ -36,3 +39,4 @@ export class S3FileStorageServiceEventLogger {
         });
     }
 }
+exports.S3FileStorageServiceEventLogger = S3FileStorageServiceEventLogger;

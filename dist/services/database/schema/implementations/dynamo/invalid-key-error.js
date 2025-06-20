@@ -1,4 +1,7 @@
-export class InvalidKeyError extends Error {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InvalidKeyError = void 0;
+class InvalidKeyError extends Error {
     tableName;
     receivedKey;
     expectedKey;
@@ -12,3 +15,4 @@ export class InvalidKeyError extends Error {
         Object.setPrototypeOf(this, InvalidKeyError.prototype);
     }
 }
+exports.InvalidKeyError = InvalidKeyError;

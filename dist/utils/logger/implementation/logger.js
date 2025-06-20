@@ -1,4 +1,7 @@
-export class Logger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Logger = void 0;
+class Logger {
     baseContext;
     constructor(contextItem) {
         this.baseContext = contextItem ? { ...contextItem } : {};
@@ -25,3 +28,4 @@ export class Logger {
         console.log(JSON.stringify(logEntry));
     }
 }
+exports.Logger = Logger;

@@ -1,12 +1,15 @@
-import { InternalException } from '@aws-sdk/client-eventbridge';
-export class EventBridgeEventDispatcherErrorHandler {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EventBridgeEventDispatcherErrorHandler = void 0;
+const client_eventbridge_1 = require("@aws-sdk/client-eventbridge");
+class EventBridgeEventDispatcherErrorHandler {
     canHandle(error) {
-        return error instanceof InternalException;
+        return error instanceof client_eventbridge_1.InternalException;
     }
     handle(error, logger, resBuilder) {
         const errorMap = [
             {
-                type: InternalException,
+                type: client_eventbridge_1.InternalException,
                 log: {},
                 response: () => resBuilder.internalError(),
             },
@@ -22,3 +25,4 @@ export class EventBridgeEventDispatcherErrorHandler {
         }
     }
 }
+exports.EventBridgeEventDispatcherErrorHandler = EventBridgeEventDispatcherErrorHandler;

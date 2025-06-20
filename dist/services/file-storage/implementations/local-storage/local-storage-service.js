@@ -1,6 +1,9 @@
-import * as fs from 'fs';
-import * as path from 'path';
-export class LocalStorageService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LocalStorageService = void 0;
+const fs = require("fs");
+const path = require("path");
+class LocalStorageService {
     dir;
     constructor(directoryPath) {
         this.dir = path.resolve(directoryPath);
@@ -40,3 +43,4 @@ export class LocalStorageService {
         }
     }
 }
+exports.LocalStorageService = LocalStorageService;

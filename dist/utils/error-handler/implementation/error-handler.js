@@ -1,4 +1,7 @@
-export class ErrorHandler {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ErrorHandler = void 0;
+class ErrorHandler {
     handlers;
     logger;
     resBuilder;
@@ -21,3 +24,4 @@ export class ErrorHandler {
         return this.resBuilder.internalError('Unhandled error');
     }
 }
+exports.ErrorHandler = ErrorHandler;

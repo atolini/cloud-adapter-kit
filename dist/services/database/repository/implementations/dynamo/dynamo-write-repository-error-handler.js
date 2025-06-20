@@ -1,15 +1,18 @@
-import { ConditionalCheckFailedException, InternalServerError, InvalidEndpointException, ItemCollectionSizeLimitExceededException, ProvisionedThroughputExceededException, ReplicatedWriteConflictException, RequestLimitExceeded, ResourceNotFoundException, TransactionConflictException, } from '@aws-sdk/client-dynamodb';
-export class DynamoWriteRepositoryErrorHandler {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoWriteRepositoryErrorHandler = void 0;
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+class DynamoWriteRepositoryErrorHandler {
     handledErrors = new Set([
-        ConditionalCheckFailedException,
-        InternalServerError,
-        InvalidEndpointException,
-        ItemCollectionSizeLimitExceededException,
-        ProvisionedThroughputExceededException,
-        ReplicatedWriteConflictException,
-        RequestLimitExceeded,
-        ResourceNotFoundException,
-        TransactionConflictException,
+        client_dynamodb_1.ConditionalCheckFailedException,
+        client_dynamodb_1.InternalServerError,
+        client_dynamodb_1.InvalidEndpointException,
+        client_dynamodb_1.ItemCollectionSizeLimitExceededException,
+        client_dynamodb_1.ProvisionedThroughputExceededException,
+        client_dynamodb_1.ReplicatedWriteConflictException,
+        client_dynamodb_1.RequestLimitExceeded,
+        client_dynamodb_1.ResourceNotFoundException,
+        client_dynamodb_1.TransactionConflictException,
     ]);
     canHandle(error) {
         return Array.from(this.handledErrors).some((errorType) => error instanceof errorType);
@@ -17,39 +20,39 @@ export class DynamoWriteRepositoryErrorHandler {
     handle(error, logger, resBuilder) {
         const errorMap = [
             {
-                type: ConditionalCheckFailedException,
+                type: client_dynamodb_1.ConditionalCheckFailedException,
                 response: () => resBuilder.badRequest('Conditional check failed. Please check the request parameters.'),
             },
             {
-                type: InternalServerError,
+                type: client_dynamodb_1.InternalServerError,
                 response: () => resBuilder.internalError('An internal server error occurred. Please try again later.'),
             },
             {
-                type: InvalidEndpointException,
+                type: client_dynamodb_1.InvalidEndpointException,
                 response: () => resBuilder.internalError('Invalid endpoint. Please check your configuration.'),
             },
             {
-                type: ItemCollectionSizeLimitExceededException,
+                type: client_dynamodb_1.ItemCollectionSizeLimitExceededException,
                 response: () => resBuilder.tooManyRequests('Item collection size limit exceeded. Please try again later.'),
             },
             {
-                type: ProvisionedThroughputExceededException,
+                type: client_dynamodb_1.ProvisionedThroughputExceededException,
                 response: () => resBuilder.tooManyRequests('Provisioned throughput exceeded. Please try again later.'),
             },
             {
-                type: ReplicatedWriteConflictException,
+                type: client_dynamodb_1.ReplicatedWriteConflictException,
                 response: () => resBuilder.tooManyRequests('Replicated write conflict. Please try again later.'),
             },
             {
-                type: RequestLimitExceeded,
+                type: client_dynamodb_1.RequestLimitExceeded,
                 response: () => resBuilder.tooManyRequests('Request limit exceeded. Please try again later.'),
             },
             {
-                type: ResourceNotFoundException,
+                type: client_dynamodb_1.ResourceNotFoundException,
                 response: () => resBuilder.notFound('The specified resource was not found.'),
             },
             {
-                type: TransactionConflictException,
+                type: client_dynamodb_1.TransactionConflictException,
                 response: () => resBuilder.tooManyRequests('Transaction conflict. Please try again later.'),
             },
         ];
@@ -64,3 +67,4 @@ export class DynamoWriteRepositoryErrorHandler {
         }
     }
 }
+exports.DynamoWriteRepositoryErrorHandler = DynamoWriteRepositoryErrorHandler;

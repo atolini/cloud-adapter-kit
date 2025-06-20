@@ -1,4 +1,7 @@
-export class SESEmailServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SESEmailServiceEventLogger = void 0;
+class SESEmailServiceEventLogger {
     logger;
     constructor(logger) {
         this.logger = logger;
@@ -12,3 +15,4 @@ export class SESEmailServiceEventLogger {
         });
     }
 }
+exports.SESEmailServiceEventLogger = SESEmailServiceEventLogger;

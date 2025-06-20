@@ -1,4 +1,7 @@
-export class CloudWatchLogServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CloudWatchLogServiceEventLogger = void 0;
+class CloudWatchLogServiceEventLogger {
     logger;
     constructor(logger) {
         this.logger = logger;
@@ -12,3 +15,4 @@ export class CloudWatchLogServiceEventLogger {
         });
     }
 }
+exports.CloudWatchLogServiceEventLogger = CloudWatchLogServiceEventLogger;

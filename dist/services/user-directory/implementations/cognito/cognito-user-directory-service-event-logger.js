@@ -1,4 +1,7 @@
-export class CognitoUserDirectoryServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CognitoUserDirectoryServiceEventLogger = void 0;
+class CognitoUserDirectoryServiceEventLogger {
     logger;
     userPoolId;
     constructor(logger, userPoolId) {
@@ -29,3 +32,4 @@ export class CognitoUserDirectoryServiceEventLogger {
         });
     }
 }
+exports.CognitoUserDirectoryServiceEventLogger = CognitoUserDirectoryServiceEventLogger;

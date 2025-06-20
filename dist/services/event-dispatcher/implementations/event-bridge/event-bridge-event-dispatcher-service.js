@@ -1,5 +1,8 @@
-import { PutEventsCommand, } from '@aws-sdk/client-eventbridge';
-export class EventBridgeEventDispatcherService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EventBridgeEventDispatcherService = void 0;
+const client_eventbridge_1 = require("@aws-sdk/client-eventbridge");
+class EventBridgeEventDispatcherService {
     eventBusName;
     service;
     eventLogger;
@@ -21,7 +24,7 @@ export class EventBridgeEventDispatcherService {
         this.eventLogger.batchEventsPublished(events, this.eventBusName);
     }
     async sendCommand(entries) {
-        const command = new PutEventsCommand({ Entries: entries });
+        const command = new client_eventbridge_1.PutEventsCommand({ Entries: entries });
         await this.client.send(command);
     }
     toEventBridgeEntry(event) {
@@ -40,3 +43,4 @@ export class EventBridgeEventDispatcherService {
         };
     }
 }
+exports.EventBridgeEventDispatcherService = EventBridgeEventDispatcherService;

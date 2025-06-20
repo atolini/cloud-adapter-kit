@@ -1,14 +1,17 @@
-import { CloudWatchLogsClient, DescribeLogStreamsCommand, PutLogEventsCommand, } from '@aws-sdk/client-cloudwatch-logs';
-export class CloudWatchLogService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CloudWatchLogService = void 0;
+const client_cloudwatch_logs_1 = require("@aws-sdk/client-cloudwatch-logs");
+class CloudWatchLogService {
     eventLogger;
     client;
     constructor(eventLogger, region) {
         this.eventLogger = eventLogger;
-        this.client = new CloudWatchLogsClient(region ? { region } : {});
+        this.client = new client_cloudwatch_logs_1.CloudWatchLogsClient(region ? { region } : {});
     }
     async putLog(logs, logContainerId) {
         const { logGroupName, logStreamName } = logContainerId;
-        const describeRes = await this.client.send(new DescribeLogStreamsCommand({
+        const describeRes = await this.client.send(new client_cloudwatch_logs_1.DescribeLogStreamsCommand({
             logGroupName,
             logStreamNamePrefix: logStreamName,
         }));
@@ -18,7 +21,7 @@ export class CloudWatchLogService {
             message: typeof log === 'string' ? log : JSON.stringify(log),
             timestamp: Date.now(),
         }));
-        await this.client.send(new PutLogEventsCommand({
+        await this.client.send(new client_cloudwatch_logs_1.PutLogEventsCommand({
             logEvents,
             logGroupName,
             logStreamName,
@@ -27,3 +30,4 @@ export class CloudWatchLogService {
         this.eventLogger.logsDispatched(logGroupName, logStreamName, logs.length);
     }
 }
+exports.CloudWatchLogService = CloudWatchLogService;

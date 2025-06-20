@@ -1,4 +1,7 @@
-export class EventBridgeEventDispatcherServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EventBridgeEventDispatcherServiceEventLogger = void 0;
+class EventBridgeEventDispatcherServiceEventLogger {
     logger;
     constructor(logger) {
         this.logger = logger;
@@ -19,3 +22,4 @@ export class EventBridgeEventDispatcherServiceEventLogger {
         events.forEach((event) => this.eventPublished(event, transport));
     }
 }
+exports.EventBridgeEventDispatcherServiceEventLogger = EventBridgeEventDispatcherServiceEventLogger;

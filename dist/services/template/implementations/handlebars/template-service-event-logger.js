@@ -1,4 +1,7 @@
-export class TemplateServiceEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TemplateServiceEventLogger = void 0;
+class TemplateServiceEventLogger {
     logger;
     constructor(logger) {
         this.logger = logger;
@@ -17,3 +20,4 @@ export class TemplateServiceEventLogger {
         });
     }
 }
+exports.TemplateServiceEventLogger = TemplateServiceEventLogger;

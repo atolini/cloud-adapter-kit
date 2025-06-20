@@ -1,4 +1,7 @@
-export class DynamoConditionBuilder {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoConditionBuilder = void 0;
+class DynamoConditionBuilder {
     expressions = [];
     attributeNames = {};
     attributeValues = {};
@@ -49,3 +52,4 @@ export class DynamoConditionBuilder {
         throw new Error(`Unsupported value type: ${typeof value}`);
     }
 }
+exports.DynamoConditionBuilder = DynamoConditionBuilder;

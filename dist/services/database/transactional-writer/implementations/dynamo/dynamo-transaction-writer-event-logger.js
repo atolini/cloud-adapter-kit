@@ -1,4 +1,7 @@
-export class DynamoTransactionWriterEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoTransactionWriterEventLogger = void 0;
+class DynamoTransactionWriterEventLogger {
     logger;
     constructor(logger) {
         this.logger = logger;
@@ -11,3 +14,4 @@ export class DynamoTransactionWriterEventLogger {
         });
     }
 }
+exports.DynamoTransactionWriterEventLogger = DynamoTransactionWriterEventLogger;

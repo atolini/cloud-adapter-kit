@@ -1,6 +1,9 @@
-import { GetItemCommand, QueryCommand, } from '@aws-sdk/client-dynamodb';
-import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-export class DynamoReadRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoReadRepository = void 0;
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+const util_dynamodb_1 = require("@aws-sdk/util-dynamodb");
+class DynamoReadRepository {
     schema;
     client;
     eventLogger;
@@ -15,12 +18,12 @@ export class DynamoReadRepository {
         this.validateKey(key);
         const params = {
             TableName: this.tableName,
-            Key: marshall(key),
+            Key: (0, util_dynamodb_1.marshall)(key),
         };
-        const command = new GetItemCommand(params);
+        const command = new client_dynamodb_1.GetItemCommand(params);
         const response = await this.client.send(command);
         const item = response.Item
-            ? unmarshall(response.Item)
+            ? (0, util_dynamodb_1.unmarshall)(response.Item)
             : null;
         this.eventLogger?.itemFetched(key, item);
         return item;
@@ -36,19 +39,19 @@ export class DynamoReadRepository {
             ConsistentRead: consistentRead ?? false,
             Limit: limit,
             ExclusiveStartKey: exclusiveStartKey
-                ? marshall(exclusiveStartKey)
+                ? (0, util_dynamodb_1.marshall)(exclusiveStartKey)
                 : undefined,
         };
         if (indexName) {
             params.IndexName = indexName;
         }
-        const command = new QueryCommand(params);
+        const command = new client_dynamodb_1.QueryCommand(params);
         const response = await this.client.send(command);
         const items = response.Items
-            ? response.Items.map((i) => unmarshall(i))
+            ? response.Items.map((i) => (0, util_dynamodb_1.unmarshall)(i))
             : [];
         const lastEvaluatedKey = response.LastEvaluatedKey
-            ? unmarshall(response.LastEvaluatedKey)
+            ? (0, util_dynamodb_1.unmarshall)(response.LastEvaluatedKey)
             : undefined;
         this.eventLogger?.queryExecuted(condition.build(), items, lastEvaluatedKey);
         return {
@@ -60,3 +63,4 @@ export class DynamoReadRepository {
         this.schema.validateKey(key);
     }
 }
+exports.DynamoReadRepository = DynamoReadRepository;

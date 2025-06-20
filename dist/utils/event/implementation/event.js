@@ -1,4 +1,7 @@
-export class DomainEvent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DomainEvent = void 0;
+class DomainEvent {
     createdAt;
     constructor() {
         this.createdAt = new Date();
@@ -13,3 +16,4 @@ export class DomainEvent {
         return this.constructor.name;
     }
 }
+exports.DomainEvent = DomainEvent;

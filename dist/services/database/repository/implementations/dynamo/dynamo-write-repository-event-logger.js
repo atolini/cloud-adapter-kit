@@ -1,4 +1,7 @@
-export class DynamoWriteRepositoryEventLogger {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoWriteRepositoryEventLogger = void 0;
+class DynamoWriteRepositoryEventLogger {
     logger;
     tableName;
     constructor(logger, tableName) {
@@ -38,3 +41,4 @@ export class DynamoWriteRepositoryEventLogger {
         });
     }
 }
+exports.DynamoWriteRepositoryEventLogger = DynamoWriteRepositoryEventLogger;

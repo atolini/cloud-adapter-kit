@@ -1,7 +1,10 @@
-import { DeleteItemCommand, PutItemCommand, UpdateItemCommand, } from '@aws-sdk/client-dynamodb';
-import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { merge } from 'lodash';
-export class DynamoWriteRepository {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamoWriteRepository = void 0;
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+const util_dynamodb_1 = require("@aws-sdk/util-dynamodb");
+const lodash_1 = require("lodash");
+class DynamoWriteRepository {
     schema;
     client;
     eventLogger;
@@ -16,9 +19,9 @@ export class DynamoWriteRepository {
         this.schema.validateKey(item);
         const params = {
             TableName: this.tableName,
-            Item: marshall(item),
+            Item: (0, util_dynamodb_1.marshall)(item),
         };
-        const command = new PutItemCommand(params);
+        const command = new client_dynamodb_1.PutItemCommand(params);
         await this.client.send(command);
         this.eventLogger?.itemCreated(item);
         return item;
@@ -27,9 +30,9 @@ export class DynamoWriteRepository {
         this.schema.validateKey(key);
         const params = {
             TableName: this.tableName,
-            Key: marshall(key),
+            Key: (0, util_dynamodb_1.marshall)(key),
         };
-        const command = new DeleteItemCommand(params);
+        const command = new client_dynamodb_1.DeleteItemCommand(params);
         await this.client.send(command);
         this.eventLogger.itemDeleted(key);
     }
@@ -38,7 +41,7 @@ export class DynamoWriteRepository {
         const { UpdateExpression, ExpressionAttributeNames, ExpressionAttributeValues, } = update.build();
         const params = {
             TableName: this.tableName,
-            Key: marshall(key),
+            Key: (0, util_dynamodb_1.marshall)(key),
             UpdateExpression,
             ExpressionAttributeNames,
             ExpressionAttributeValues,
@@ -47,12 +50,13 @@ export class DynamoWriteRepository {
         if (condition) {
             const { ConditionExpression, ExpressionAttributeNames, ExpressionAttributeValues, } = condition.build();
             params.ConditionExpression = ConditionExpression;
-            params.ExpressionAttributeNames = merge({}, params.ExpressionAttributeNames, ExpressionAttributeNames);
-            params.ExpressionAttributeValues = merge({}, params.ExpressionAttributeValues, ExpressionAttributeValues);
+            params.ExpressionAttributeNames = (0, lodash_1.merge)({}, params.ExpressionAttributeNames, ExpressionAttributeNames);
+            params.ExpressionAttributeValues = (0, lodash_1.merge)({}, params.ExpressionAttributeValues, ExpressionAttributeValues);
         }
-        const command = new UpdateItemCommand(params);
+        const command = new client_dynamodb_1.UpdateItemCommand(params);
         const response = await this.client.send(command);
         this.eventLogger?.itemUpdated(key, update.build(), condition.build());
-        return response.Attributes ? unmarshall(response.Attributes) : null;
+        return response.Attributes ? (0, util_dynamodb_1.unmarshall)(response.Attributes) : null;
     }
 }
+exports.DynamoWriteRepository = DynamoWriteRepository;
