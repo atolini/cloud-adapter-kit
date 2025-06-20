@@ -36,17 +36,23 @@ class DynamoTransactionWriter {
             const pkName = container.getPartitionKey().name;
             const skName = container.getSortKey()?.name;
             const hasSortKey = container.hasSortKey();
-            const version = item.version ? String(item.version) : null;
-            const condition = hasSortKey
-                ? '(attribute_not_exists(#pk) AND attribute_not_exists(#sk)) OR version = :expectedVersion'
-                : 'attribute_not_exists(#pk) OR version = :expectedVersion';
+            const isUpdate = !!item.version;
+            const condition = isUpdate
+                ? hasSortKey
+                    ? '(attribute_not_exists(#pk) AND attribute_not_exists(#sk)) OR version = :expectedVersion'
+                    : 'attribute_not_exists(#pk) OR version = :expectedVersion'
+                : hasSortKey
+                    ? 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)'
+                    : 'attribute_not_exists(#pk)';
             const expressionNames = {
                 '#pk': pkName,
                 ...(hasSortKey && skName ? { '#sk': skName } : {}),
             };
-            const expressionValues = {
-                ':expectedVersion': { S: version },
-            };
+            const expressionValues = isUpdate
+                ? {
+                    ':expectedVersion': { S: String(item.version) },
+                }
+                : undefined;
             item.version = crypto.randomUUID();
             return {
                 Put: {
@@ -54,7 +60,7 @@ class DynamoTransactionWriter {
                     Item: (0, util_dynamodb_1.marshall)(item),
                     ConditionExpression: condition,
                     ExpressionAttributeNames: expressionNames,
-                    ExpressionAttributeValues: expressionValues,
+                    ...(expressionValues && { ExpressionAttributeValues: expressionValues }),
                 },
             };
         });
