@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./dynamo-transaction-writer-error-handler"), exports);
 __exportStar(require("./dynamo-transaction-writer"), exports);
 __exportStar(require("./max-item-exceeded-error"), exports);
+__exportStar(require("./dynamo-transaction-writer-event-logger"), exports);

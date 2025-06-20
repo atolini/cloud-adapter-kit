@@ -1,1 +1,0 @@
-{"version":3,"file":"batch-authorization-response.d.ts","sourceRoot":"","sources":["../../../../../src/services/authorization/contracts/batch-authorization-response.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,qBAAqB,EAAE,MAAM,GAAG,CAAC;AAS1C,MAAM,WAAW,0BAA0B,CAAC,CAAC;IAE3C,OAAO,EAAE,qBAAqB,CAAC,CAAC,CAAC,EAAE,CAAC;CACrC"}

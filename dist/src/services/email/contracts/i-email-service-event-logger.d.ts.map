@@ -1,1 +1,0 @@
-{"version":3,"file":"i-email-service-event-logger.d.ts","sourceRoot":"","sources":["../../../../../src/services/email/contracts/i-email-service-event-logger.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,MAAM,GAAG,CAAC;AAKvC,MAAM,WAAW,wBAAwB;IAMvC,SAAS,CAAC,OAAO,EAAE,kBAAkB,GAAG,IAAI,CAAC;CAC9C"}

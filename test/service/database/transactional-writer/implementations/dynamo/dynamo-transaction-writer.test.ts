@@ -1,9 +1,11 @@
-import { DynamoTransactionWriter } from '../../../../../../src/services/database/transactional-writer/implementations/dynamo';
+import { Logger } from '../../../../../../src/utils/logger/implementation';
+import { DynamoTransactionWriter, DynamoTransactionWriterEventLogger } from '../../../../../../src/services/database/transactional-writer/implementations/dynamo';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 describe('DynamoTransactionWriter - buildTransactItems', () => {
   const client = new DynamoDBClient({});
-  const writer = new DynamoTransactionWriter(client);
+  const logger = new Logger(); 
+  const writer = new DynamoTransactionWriter(client, new DynamoTransactionWriterEventLogger(logger));
 
   const mockSchema = {
     getTableName: () => 'TestTable',

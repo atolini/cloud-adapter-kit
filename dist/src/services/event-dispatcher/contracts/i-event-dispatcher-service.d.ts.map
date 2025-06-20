@@ -1,1 +1,0 @@
-{"version":3,"file":"i-event-dispatcher-service.d.ts","sourceRoot":"","sources":["../../../../../src/services/event-dispatcher/contracts/i-event-dispatcher-service.ts"],"names":[],"mappings":"AAQA,MAAM,WAAW,uBAAuB,CAAC,CAAC;IAMxC,OAAO,CAAC,MAAM,EAAE,CAAC,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;IAOlC,UAAU,CAAC,MAAM,EAAE,CAAC,EAAE,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;CACxC"}

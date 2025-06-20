@@ -45,7 +45,7 @@ class DynamoTransactionWriter {
                 const condition = hasSortKey
                     ? 'attribute_exists(#pk) AND attribute_exists(#sk) AND version = :expectedVersion'
                     : 'attribute_exists(#pk) AND version = :expectedVersion';
-                return {
+                const result = {
                     Put: {
                         TableName: container.getTableName(),
                         Item: (0, util_dynamodb_1.marshall)({ ...item, version: newVersion }, { removeUndefinedValues: true }),
@@ -59,11 +59,13 @@ class DynamoTransactionWriter {
                         },
                     },
                 };
+                this.logger?.logTransactWriteCommand(result);
+                return result;
             }
             const condition = hasSortKey
                 ? 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)'
                 : 'attribute_not_exists(#pk)';
-            return {
+            const result = {
                 Put: {
                     TableName: container.getTableName(),
                     Item: (0, util_dynamodb_1.marshall)({ ...item, version: newVersion }, { removeUndefinedValues: true }),
@@ -74,6 +76,8 @@ class DynamoTransactionWriter {
                     },
                 },
             };
+            this.logger?.logTransactWriteCommand(result);
+            return result;
         });
     }
 }
