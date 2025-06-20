@@ -57,7 +57,7 @@ class DynamoTransactionWriter {
             return {
                 Put: {
                     TableName: container.getTableName(),
-                    Item: (0, util_dynamodb_1.marshall)(item),
+                    Item: (0, util_dynamodb_1.marshall)(item, { removeUndefinedValues: true }),
                     ConditionExpression: condition,
                     ExpressionAttributeNames: expressionNames,
                     ...(expressionValues && { ExpressionAttributeValues: expressionValues }),
