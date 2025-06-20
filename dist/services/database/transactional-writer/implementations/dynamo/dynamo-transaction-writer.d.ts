@@ -8,9 +8,6 @@ export declare class DynamoTransactionWriter implements ITransactionalWriter<Dyn
     write(units: Units): Promise<void>;
     private validateKeys;
     private validateBatchSize;
-    private hashItem;
     private buildTransactItems;
-    private buildClientRequestToken;
-    private ensureItemHasHash;
 }
 //# sourceMappingURL=dynamo-transaction-writer.d.ts.map

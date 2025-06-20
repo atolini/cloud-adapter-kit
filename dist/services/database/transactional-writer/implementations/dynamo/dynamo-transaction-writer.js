@@ -4,7 +4,6 @@ exports.DynamoTransactionWriter = void 0;
 const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
 const util_dynamodb_1 = require("@aws-sdk/util-dynamodb");
 const dynamo_1 = require("../../../transactional-writer/implementations/dynamo");
-const crypto_1 = require("crypto");
 class DynamoTransactionWriter {
     client;
     maxBatchItems = 100;
@@ -14,11 +13,10 @@ class DynamoTransactionWriter {
     async write(units) {
         this.validateBatchSize(units);
         this.validateKeys(units);
-        const unitsWithHash = this.ensureItemHasHash(units);
-        const transacts = this.buildTransactItems(unitsWithHash);
+        const transacts = this.buildTransactItems(units);
         const params = {
             TransactItems: transacts,
-            ClientRequestToken: this.buildClientRequestToken(unitsWithHash),
+            ClientRequestToken: crypto.randomUUID(),
         };
         const command = new client_dynamodb_1.TransactWriteItemsCommand(params);
         await this.client.send(command);
@@ -33,31 +31,23 @@ class DynamoTransactionWriter {
             throw new dynamo_1.MaxItemsExceededError(this.maxBatchItems);
         }
     }
-    hashItem(item) {
-        const sorted = Object.keys(item)
-            .sort()
-            .reduce((acc, key) => {
-            acc[key] = item[key];
-            return acc;
-        }, {});
-        const json = JSON.stringify(sorted);
-        return (0, crypto_1.createHash)('sha256').update(json).digest('hex');
-    }
-    buildTransactItems(unitsWithHash) {
-        return unitsWithHash.map(({ container, item }) => {
+    buildTransactItems(units) {
+        return units.map(({ container, item }) => {
             const pkName = container.getPartitionKey().name;
             const skName = container.getSortKey()?.name;
-            const hasSortKey = !!skName;
+            const hasSortKey = container.hasSortKey();
+            const version = item.version ? String(item.version) : null;
             const condition = hasSortKey
-                ? '(attribute_not_exists(#pk) AND attribute_not_exists(#sk)) OR contentHash = :expectedHash'
-                : 'attribute_not_exists(#pk) OR contentHash = :expectedHash';
+                ? '(attribute_not_exists(#pk) AND attribute_not_exists(#sk)) OR version = :expectedVersion'
+                : 'attribute_not_exists(#pk) OR version = :expectedVersion';
             const expressionNames = {
                 '#pk': pkName,
                 ...(hasSortKey && skName ? { '#sk': skName } : {}),
             };
             const expressionValues = {
-                ':expectedHash': { S: item.hash },
+                ':expectedVersion': { S: version },
             };
+            item.version = crypto.randomUUID();
             return {
                 Put: {
                     TableName: container.getTableName(),
@@ -68,24 +58,6 @@ class DynamoTransactionWriter {
                 },
             };
         });
-    }
-    buildClientRequestToken(unitsWithHash) {
-        const combinedHash = unitsWithHash
-            .map(unit => unit.item.hash)
-            .sort()
-            .join('|');
-        return (0, crypto_1.createHash)('sha256').update(combinedHash).digest('hex');
-    }
-    ensureItemHasHash(units) {
-        return units.map((unit) => ({
-            container: unit.container,
-            item: unit.item.hash
-                ? unit.item
-                : {
-                    ...unit.item,
-                    hash: this.hashItem(unit.item),
-                },
-        }));
     }
 }
 exports.DynamoTransactionWriter = DynamoTransactionWriter;
