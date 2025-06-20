@@ -163,19 +163,10 @@ export class DynamoTransactionWriter
         return result;
       }
 
-      const condition = hasSortKey
-        ? 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)'
-        : 'attribute_not_exists(#pk)';
-
       const result = {
         Put: {
           TableName: container.getTableName(),
           Item: marshall({ ...item, version: newVersion }, { removeUndefinedValues: true }),
-          ConditionExpression: condition,
-          ExpressionAttributeNames: {
-            '#pk': pkName,
-            ...(hasSortKey && skName ? { '#sk': skName } : {}),
-          },
         },
       };
 
