@@ -13,6 +13,7 @@ import {
 import {
   MaxItemsExceededError,
 } from '@database/transactional-writer/implementations/dynamo';
+import { DynamoTransactionWriterEventLogger } from './dynamo-transaction-writer-event-logger';
 
 export type Units = ITransactionalWriterUnit<DynamoSchema<any>, Record<string, unknown>>[]
 
@@ -23,17 +24,18 @@ export type Units = ITransactionalWriterUnit<DynamoSchema<any>, Record<string, u
  */
 export class DynamoTransactionWriter
   implements ITransactionalWriter<DynamoSchema<any>, Record<string, unknown>> {
-  private readonly client: DynamoDBClient;
   private readonly maxBatchItems: number = 100; // DynamoDB limit for batch write operations
 
   /**
    * Creates a new instance of DynamoTransactionWrite.
    *
-   * @param {string} [region] - Optional AWS region. If not provided, uses default SDK configuration.
+   * @param {DynamoDBClient} client - AWS DynamoDB Client instance
+   * @param {DynamoTransactionWriterEventLogger} [logger] - Optional logger for transaction events
    */
-  constructor(region?: string) {
-    this.client = new DynamoDBClient(region ? { region: region } : {});
-  }
+  constructor(
+    private readonly client: DynamoDBClient,
+    private readonly logger?: DynamoTransactionWriterEventLogger
+  ) {}
 
   /**
    * Writes a batch of items to DynamoDB transactionally.
@@ -79,6 +81,8 @@ export class DynamoTransactionWriter
     const command = new TransactWriteItemsCommand(params);
 
     await this.client.send(command);
+
+    this.logger?.transactionSucceeded(units);
   }
 
   /* Helpers */
@@ -132,34 +136,42 @@ export class DynamoTransactionWriter
       const hasSortKey = container.hasSortKey();
 
       const isUpdate = !!item.version;
-      const condition = isUpdate
-        ? hasSortKey
-          ? '(attribute_not_exists(#pk) AND attribute_not_exists(#sk)) OR version = :expectedVersion'
-          : 'attribute_not_exists(#pk) OR version = :expectedVersion'
-        : hasSortKey
-          ? 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)'
-          : 'attribute_not_exists(#pk)';
+      const newVersion = crypto.randomUUID();
 
-      const expressionNames: Record<string, string> = {
-        '#pk': pkName,
-        ...(hasSortKey && skName ? { '#sk': skName } : {}),
-      };
+      if (isUpdate) {
+        const condition = hasSortKey
+          ? 'attribute_exists(#pk) AND attribute_exists(#sk) AND version = :expectedVersion'
+          : 'attribute_exists(#pk) AND version = :expectedVersion';
 
-      const expressionValues = isUpdate
-        ? {
-          ':expectedVersion': { S: String(item.version) },
-        }
-        : undefined;
+        return {
+          Put: {
+            TableName: container.getTableName(),
+            Item: marshall({ ...item, version: newVersion }, { removeUndefinedValues: true }),
+            ConditionExpression: condition,
+            ExpressionAttributeNames: {
+              '#pk': pkName,
+              ...(hasSortKey && skName ? { '#sk': skName } : {}),
+            },
+            ExpressionAttributeValues: {
+              ':expectedVersion': { S: String(item.version) },
+            },
+          },
+        };
+      }
 
-      item.version = crypto.randomUUID();
+      const condition = hasSortKey
+        ? 'attribute_not_exists(#pk) AND attribute_not_exists(#sk)'
+        : 'attribute_not_exists(#pk)';
 
       return {
         Put: {
           TableName: container.getTableName(),
-          Item: marshall(item, { removeUndefinedValues: true }),
+          Item: marshall({ ...item, version: newVersion }, { removeUndefinedValues: true }),
           ConditionExpression: condition,
-          ExpressionAttributeNames: expressionNames,
-          ...(expressionValues && { ExpressionAttributeValues: expressionValues }),
+          ExpressionAttributeNames: {
+            '#pk': pkName,
+            ...(hasSortKey && skName ? { '#sk': skName } : {}),
+          },
         },
       };
     });
