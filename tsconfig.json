@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": false,
     "moduleResolution": "node",
     "declaration": true,
@@ -26,6 +26,6 @@
       "@error-handler/*": ["utils/error-handler/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts", "node_modules", "docs"]
 }
